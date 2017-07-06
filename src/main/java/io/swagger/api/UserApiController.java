@@ -4,10 +4,13 @@ import io.swagger.model.Body;
 import io.swagger.model.Body1;
 import io.swagger.model.InlineResponse200;
 import io.swagger.model.InlineResponse2001;
+import io.swagger.service.UserService;
+
 import java.util.Map;
 
 import io.swagger.annotations.*;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -26,7 +29,8 @@ import javax.validation.constraints.*;
 @Controller
 public class UserApiController implements UserApi {
 
-
+	@Autowired
+	private UserService userService;
 
     public ResponseEntity<InlineResponse200> createUser(@ApiParam(value = "Created user object" ,required=true ) @RequestBody Body body) {
         // do some magic!
@@ -45,6 +49,7 @@ public class UserApiController implements UserApi {
 
     public ResponseEntity<InlineResponse2001> getUserById(@ApiParam(value = "The user id that needs to be fetched.",required=true ) @PathVariable("userId") String userId) {
         // do some magic!
+    	userService.getUserByUserid(userId);
         return new ResponseEntity<InlineResponse2001>(HttpStatus.OK);
     }
 

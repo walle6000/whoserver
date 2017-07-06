@@ -1,39 +1,59 @@
 package io.swagger.model;
 
+import java.io.Serializable;
 import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import javax.validation.constraints.*;
 /**
  * UserUserProfile
  */
+@SuppressWarnings("serial")
 @javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2017-07-05T03:12:51.178Z")
 
-public class UserProfile   {
+@Entity
+@Table(name="userprofile")
+public class UserProfile implements Serializable  {
   @JsonProperty("id")
+  @Id
+  @GeneratedValue(strategy=GenerationType.AUTO)
   private Long id = null;
 
   @JsonProperty("userName")
+  @Column(name="username")
   private String userName = null;
 
   @JsonProperty("email")
+  @Column(name="email")
   private String email = null;
 
   @JsonProperty("phone")
+  @Column(name="phone")
   private String phone = null;
 
   @JsonProperty("weixin")
+  @Column(name="weixin")
   private String weixin = null;
 
   @JsonProperty("qq")
+  @Column(name="qq")
   private String qq = null;
 
   @JsonProperty("headIcon")
+  @Column(name="headicon")
   private String headIcon = null;
 
   @JsonProperty("summry")
+  @Column(name="summry")
   private String summry = null;
 
   public UserProfile id(Long id) {

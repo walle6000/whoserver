@@ -1,34 +1,56 @@
 package io.swagger.model;
 
+import java.io.Serializable;
 import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import io.swagger.model.UserProfile;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.validation.constraints.*;
 /**
  * User
  */
+@SuppressWarnings("serial")
 @javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2017-07-05T03:12:51.178Z")
-
-public class User   {
+@Entity
+@Table(name="user")
+public class User implements Serializable  {
   @JsonProperty("id")
+  @Id
+  @GeneratedValue(strategy=GenerationType.AUTO)
   private Long id = null;
 
   @JsonProperty("userid")
+  @Column(name="userid")
   private String userid = null;
 
   @JsonProperty("password")
+  @Column(name="password")
   private String password = null;
 
   @JsonProperty("identifyCode")
+  @Transient
   private String identifyCode = null;
 
   @JsonProperty("userProfile")
+  @OneToOne(cascade={CascadeType.ALL})
+  @JoinColumn(name="userprofile")
   private UserProfile userProfile = null;
 
   @JsonProperty("userStatus")
+  @Column(name="userstatus")
   private Integer userStatus = null;
 
   public User id(Long id) {
