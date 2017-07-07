@@ -11,7 +11,14 @@ import javax.validation.constraints.*;
  */
 @javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2017-07-05T03:12:51.178Z")
 
-public class InlineResponse200   {
+public class Response200   {
+ public static final int ERROR = 1;
+ public static final int WARNING = 2;
+ public static final int INFO = 3;
+ public static final int OK = 4;
+ public static final int TOO_BUSY = 5;
+
+	
   @JsonProperty("code")
   private Integer code = null;
 
@@ -21,11 +28,60 @@ public class InlineResponse200   {
   @JsonProperty("message")
   private String message = null;
 
-  public InlineResponse200 code(Integer code) {
-    this.code = code;
-    return this;
-  }
+  public Response200(int code){
+		this.code = code;
+		switch(code){
+		case ERROR:
+			setType("error");
+			break;
+		case WARNING:
+			setType("warning");
+			break;
+		case INFO:
+			setType("info");
+			break;
+		case OK:
+			setType("ok");
+			break;
+		case TOO_BUSY:
+			setType("too busy");
+			break;
+		default:
+			setType("unknown");
+			break;
+		}
+	}
 
+  public Response200(int code, String message){
+		this.code = code;
+		switch(code){
+		case ERROR:
+			setType("error");
+			break;
+		case WARNING:
+			setType("warning");
+			break;
+		case INFO:
+			setType("info");
+			break;
+		case OK:
+			setType("ok");
+			break;
+		case TOO_BUSY:
+			setType("too busy");
+			break;
+		default:
+			setType("unknown");
+			break;
+		}
+		this.message = message;
+	}
+  
+  
+  public Response200 code(Integer code) {
+	    this.code = code;
+	    return this;
+	  }
    /**
    * Get code
    * @return code
@@ -39,7 +95,7 @@ public class InlineResponse200   {
     this.code = code;
   }
 
-  public InlineResponse200 type(String type) {
+  public Response200 type(String type) {
     this.type = type;
     return this;
   }
@@ -57,7 +113,7 @@ public class InlineResponse200   {
     this.type = type;
   }
 
-  public InlineResponse200 message(String message) {
+  public Response200 message(String message) {
     this.message = message;
     return this;
   }
@@ -84,10 +140,10 @@ public class InlineResponse200   {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    InlineResponse200 inlineResponse200 = (InlineResponse200) o;
-    return Objects.equals(this.code, inlineResponse200.code) &&
-        Objects.equals(this.type, inlineResponse200.type) &&
-        Objects.equals(this.message, inlineResponse200.message);
+    Response200 response200 = (Response200) o;
+    return Objects.equals(this.code, response200.code) &&
+        Objects.equals(this.type, response200.type) &&
+        Objects.equals(this.message, response200.message);
   }
 
   @Override
@@ -98,7 +154,7 @@ public class InlineResponse200   {
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class InlineResponse200 {\n");
+    sb.append("class response200 {\n");
     
     sb.append("    code: ").append(toIndentedString(code)).append("\n");
     sb.append("    type: ").append(toIndentedString(type)).append("\n");

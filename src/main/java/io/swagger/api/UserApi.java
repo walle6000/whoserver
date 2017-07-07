@@ -2,7 +2,8 @@ package io.swagger.api;
 
 import io.swagger.model.Body;
 import io.swagger.model.Body1;
-import io.swagger.model.InlineResponse200;
+import io.swagger.model.Response200;
+import io.swagger.model.User;
 import io.swagger.model.InlineResponse2001;
 import java.util.Map;
 
@@ -24,15 +25,15 @@ import javax.validation.constraints.*;
 @Api(value = "user", description = "the user API")
 public interface UserApi {
 
-    @ApiOperation(value = "Create user", notes = "Create user when first login system.", response = InlineResponse200.class, tags={ "user", })
+    @ApiOperation(value = "Create user", notes = "Create user when first login system.", response = Response200.class, tags={ "user", })
     @ApiResponses(value = { 
-        @ApiResponse(code = 200, message = "successful operation", response = InlineResponse200.class),
-        @ApiResponse(code = 405, message = "invalid exception", response = InlineResponse200.class) })
+        @ApiResponse(code = 200, message = "successful operation", response = Response200.class),
+        @ApiResponse(code = 405, message = "invalid exception", response = Response200.class) })
     @RequestMapping(value = "/user",
         produces = { "application/xml", "application/json" }, 
         consumes = { "application/json", "application/xml" },
         method = RequestMethod.POST)
-    ResponseEntity<InlineResponse200> createUser(@ApiParam(value = "Created user object" ,required=true ) @RequestBody Body body);
+    ResponseEntity<Response200> createUser(@ApiParam(value = "Created user object" ,required=true ) @RequestBody User user);
 
 
     @ApiOperation(value = "Delete user", notes = "This can only be done by the logged in user.", response = Void.class, tags={ "user", })
@@ -48,35 +49,35 @@ public interface UserApi {
 
     @ApiOperation(value = "identify Code", notes = "Returns an identify Code for a user for a moment.", response = Integer.class, responseContainer = "Map", tags={ "user", })
     @ApiResponses(value = { 
-        @ApiResponse(code = 200, message = "successful operation", response = Integer.class),
-        @ApiResponse(code = 405, message = "invalid exception", response = Integer.class) })
+    	@ApiResponse(code = 200, message = "successful operation", response = Integer.class),
+    	@ApiResponse(code = 405, message = "invalid exception", response = Integer.class) })
     @RequestMapping(value = "/user/getIdentifyCode",
         produces = { "application/json" }, 
         method = RequestMethod.GET)
     ResponseEntity<Map<String, Integer>> getIdentifyCode();
 
 
-    @ApiOperation(value = "Get user by user Id", notes = "", response = InlineResponse2001.class, tags={ "user", })
+    @ApiOperation(value = "Get user by user Id", notes = "", response = User.class, tags={ "user", })
     @ApiResponses(value = { 
-        @ApiResponse(code = 200, message = "successful operation", response = InlineResponse2001.class),
-        @ApiResponse(code = 400, message = "Invalid username supplied", response = InlineResponse2001.class),
-        @ApiResponse(code = 401, message = "Invalid user authority", response = InlineResponse2001.class),
-        @ApiResponse(code = 404, message = "User not found", response = InlineResponse2001.class) })
+        @ApiResponse(code = 200, message = "successful operation", response = User.class),
+        @ApiResponse(code = 400, message = "Invalid username supplied", response = User.class),
+        @ApiResponse(code = 401, message = "Invalid user authority", response = User.class),
+        @ApiResponse(code = 404, message = "User not found", response = User.class) })
     @RequestMapping(value = "/user/{userId}",
         produces = { "application/xml", "application/json" }, 
         method = RequestMethod.GET)
-    ResponseEntity<InlineResponse2001> getUserById(@ApiParam(value = "The user id that needs to be fetched.",required=true ) @PathVariable("userId") String userId);
+    ResponseEntity<User> getUserById(@ApiParam(value = "The user id that needs to be fetched.",required=true ) @PathVariable("userId") String userId);
 
 
-    @ApiOperation(value = "Logs user into the system", notes = "", response = InlineResponse200.class, tags={ "user", })
+    @ApiOperation(value = "Logs user into the system", notes = "", response = Response200.class, tags={ "user", })
     @ApiResponses(value = { 
-        @ApiResponse(code = 200, message = "successful operation", response = InlineResponse200.class),
-        @ApiResponse(code = 400, message = "Invalid username/password supplied", response = InlineResponse200.class),
-        @ApiResponse(code = 405, message = "invalid exception", response = InlineResponse200.class) })
+        @ApiResponse(code = 200, message = "successful operation", response = Response200.class),
+        @ApiResponse(code = 400, message = "Invalid username/password supplied", response = Response200.class),
+        @ApiResponse(code = 405, message = "invalid exception", response = Response200.class) })
     @RequestMapping(value = "/user/login",
         produces = { "application/xml", "application/json" }, 
         method = RequestMethod.GET)
-    ResponseEntity<InlineResponse200> loginUser( @NotNull @ApiParam(value = "The user name for login", required = true) @RequestParam(value = "username", required = true) String username,
+    ResponseEntity<Response200> loginUser( @NotNull @ApiParam(value = "The user name for login", required = true) @RequestParam(value = "username", required = true) String username,
          @NotNull @ApiParam(value = "The password for login in clear text", required = true) @RequestParam(value = "password", required = true) String password);
 
 

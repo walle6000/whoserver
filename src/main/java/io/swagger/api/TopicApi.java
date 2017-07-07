@@ -3,7 +3,7 @@ package io.swagger.api;
 import io.swagger.model.Body2;
 import io.swagger.model.Body3;
 import java.io.File;
-import io.swagger.model.InlineResponse200;
+import io.swagger.model.Response200;
 import io.swagger.model.InlineResponse2002;
 import io.swagger.model.InlineResponse2003;
 import io.swagger.model.InlineResponse2004;
@@ -26,29 +26,29 @@ import javax.validation.constraints.*;
 @Api(value = "topic", description = "the topic API")
 public interface TopicApi {
 
-    @ApiOperation(value = "Add a new topic.", notes = "", response = InlineResponse200.class, tags={ "topic", })
+    @ApiOperation(value = "Add a new topic.", notes = "", response = Response200.class, tags={ "topic", })
     @ApiResponses(value = { 
-        @ApiResponse(code = 200, message = "successful operation", response = InlineResponse200.class),
-        @ApiResponse(code = 405, message = "Invalid input", response = InlineResponse200.class) })
+        @ApiResponse(code = 200, message = "successful operation", response = Response200.class),
+        @ApiResponse(code = 405, message = "Invalid input", response = Response200.class) })
     @RequestMapping(value = "/topic",
         produces = { "application/xml", "application/json" }, 
         consumes = { "application/json", "application/xml" },
         method = RequestMethod.POST)
-    ResponseEntity<InlineResponse200> addTopic(@ApiParam(value = "Topic object that needs to be added to the store" ,required=true ) @RequestBody Body3 body);
+    ResponseEntity<Response200> addTopic(@ApiParam(value = "Topic object that needs to be added to the store" ,required=true ) @RequestBody Body3 body);
 
 
-    @ApiOperation(value = "add a user for a topic", notes = "", response = InlineResponse200.class, tags={ "topic", })
+    @ApiOperation(value = "add a user for a topic", notes = "", response = Response200.class, tags={ "topic", })
     @ApiResponses(value = { 
-        @ApiResponse(code = 200, message = "successful operation", response = InlineResponse200.class),
-        @ApiResponse(code = 400, message = "Invalid ID supplied", response = InlineResponse200.class),
-        @ApiResponse(code = 401, message = "Invalid user authority", response = InlineResponse200.class),
-        @ApiResponse(code = 404, message = "Topic not found", response = InlineResponse200.class),
-        @ApiResponse(code = 405, message = "Validation exception", response = InlineResponse200.class) })
+        @ApiResponse(code = 200, message = "successful operation", response = Response200.class),
+        @ApiResponse(code = 400, message = "Invalid ID supplied", response = Response200.class),
+        @ApiResponse(code = 401, message = "Invalid user authority", response = Response200.class),
+        @ApiResponse(code = 404, message = "Topic not found", response = Response200.class),
+        @ApiResponse(code = 405, message = "Validation exception", response = Response200.class) })
     @RequestMapping(value = "/topic/{topicId}/addUser",
         produces = { "application/json" }, 
         consumes = { "application/x-www-form-urlencoded" },
         method = RequestMethod.POST)
-    ResponseEntity<InlineResponse200> addUserForTopic(@ApiParam(value = "ID of topic to update",required=true ) @PathVariable("topicId") Long topicId,
+    ResponseEntity<Response200> addUserForTopic(@ApiParam(value = "ID of topic to update",required=true ) @PathVariable("topicId") Long topicId,
         @ApiParam(value = "person who send the topic.", required=true ) @RequestPart(value="sender", required=true)  String sender);
 
 
@@ -127,48 +127,48 @@ public interface TopicApi {
     ResponseEntity<List<InlineResponse2002>> getTopics();
 
 
-    @ApiOperation(value = "send a topic to other person.", notes = "", response = InlineResponse200.class, tags={ "topic", })
+    @ApiOperation(value = "send a topic to other person.", notes = "", response = Response200.class, tags={ "topic", })
     @ApiResponses(value = { 
-        @ApiResponse(code = 200, message = "successful operation", response = InlineResponse200.class),
-        @ApiResponse(code = 400, message = "Invalid ID supplied", response = InlineResponse200.class),
-        @ApiResponse(code = 401, message = "Invalid user authority", response = InlineResponse200.class),
-        @ApiResponse(code = 404, message = "Topic not found", response = InlineResponse200.class),
-        @ApiResponse(code = 405, message = "Validation exception", response = InlineResponse200.class) })
+        @ApiResponse(code = 200, message = "successful operation", response = Response200.class),
+        @ApiResponse(code = 400, message = "Invalid ID supplied", response = Response200.class),
+        @ApiResponse(code = 401, message = "Invalid user authority", response = Response200.class),
+        @ApiResponse(code = 404, message = "Topic not found", response = Response200.class),
+        @ApiResponse(code = 405, message = "Validation exception", response = Response200.class) })
     @RequestMapping(value = "/topic/{topicId}/sendToUser",
         produces = { "application/json" }, 
         consumes = { "application/x-www-form-urlencoded" },
         method = RequestMethod.POST)
-    ResponseEntity<InlineResponse200> sendTopicToUser(@ApiParam(value = "ID of topic to send.",required=true ) @PathVariable("topicId") Long topicId,
+    ResponseEntity<Response200> sendTopicToUser(@ApiParam(value = "ID of topic to send.",required=true ) @PathVariable("topicId") Long topicId,
         @ApiParam(value = "person who receive the topic.", required=true ) @RequestPart(value="receiver", required=true)  String receiver,
         @ApiParam(value = "The way of sending.", required=true , allowableValues="INNER, MESSAGE, WEIXIN, QQ") @RequestPart(value="pattern", required=true)  String pattern);
 
 
-    @ApiOperation(value = "Update an existing topic", notes = "", response = InlineResponse200.class, tags={ "topic", })
+    @ApiOperation(value = "Update an existing topic", notes = "", response = Response200.class, tags={ "topic", })
     @ApiResponses(value = { 
-        @ApiResponse(code = 200, message = "successful operation", response = InlineResponse200.class),
-        @ApiResponse(code = 400, message = "Invalid ID supplied", response = InlineResponse200.class),
-        @ApiResponse(code = 401, message = "Invalid user authority", response = InlineResponse200.class),
-        @ApiResponse(code = 404, message = "Topic not found", response = InlineResponse200.class),
-        @ApiResponse(code = 405, message = "Validation exception", response = InlineResponse200.class) })
+        @ApiResponse(code = 200, message = "successful operation", response = Response200.class),
+        @ApiResponse(code = 400, message = "Invalid ID supplied", response = Response200.class),
+        @ApiResponse(code = 401, message = "Invalid user authority", response = Response200.class),
+        @ApiResponse(code = 404, message = "Topic not found", response = Response200.class),
+        @ApiResponse(code = 405, message = "Validation exception", response = Response200.class) })
     @RequestMapping(value = "/topic",
         produces = { "application/xml", "application/json" }, 
         consumes = { "application/json", "application/xml" },
         method = RequestMethod.PUT)
-    ResponseEntity<InlineResponse200> updateTopic(@ApiParam(value = "Topic object that needs to be added to the store" ,required=true ) @RequestBody Body2 body);
+    ResponseEntity<Response200> updateTopic(@ApiParam(value = "Topic object that needs to be added to the store" ,required=true ) @RequestBody Body2 body);
 
 
-    @ApiOperation(value = "uploads a file", notes = "", response = InlineResponse200.class, tags={ "topic", })
+    @ApiOperation(value = "uploads a file", notes = "", response = Response200.class, tags={ "topic", })
     @ApiResponses(value = { 
-        @ApiResponse(code = 200, message = "successful operation", response = InlineResponse200.class),
-        @ApiResponse(code = 400, message = "Invalid ID supplied", response = InlineResponse200.class),
-        @ApiResponse(code = 401, message = "Invalid user authority", response = InlineResponse200.class),
-        @ApiResponse(code = 404, message = "Topic not found", response = InlineResponse200.class),
-        @ApiResponse(code = 405, message = "Validation exception", response = InlineResponse200.class) })
+        @ApiResponse(code = 200, message = "successful operation", response = Response200.class),
+        @ApiResponse(code = 400, message = "Invalid ID supplied", response = Response200.class),
+        @ApiResponse(code = 401, message = "Invalid user authority", response = Response200.class),
+        @ApiResponse(code = 404, message = "Topic not found", response = Response200.class),
+        @ApiResponse(code = 405, message = "Validation exception", response = Response200.class) })
     @RequestMapping(value = "/topic/{topicId}/uploadfile",
         produces = { "application/json" }, 
         consumes = { "multipart/form-data" },
         method = RequestMethod.POST)
-    ResponseEntity<InlineResponse200> uploadFile(@ApiParam(value = "ID of topic to update",required=true ) @PathVariable("topicId") Long topicId,
+    ResponseEntity<Response200> uploadFile(@ApiParam(value = "ID of topic to update",required=true ) @PathVariable("topicId") Long topicId,
         @ApiParam(value = "file detail") @RequestPart("file") MultipartFile img,
         @ApiParam(value = "file detail") @RequestPart("file") MultipartFile file);
 

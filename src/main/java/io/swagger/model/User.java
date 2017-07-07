@@ -119,7 +119,6 @@ public class User implements Serializable  {
    * @return identifyCode
   **/
   @ApiModelProperty(required = true, value = "")
-  @NotNull
   public String getIdentifyCode() {
     return identifyCode;
   }

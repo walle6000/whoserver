@@ -1,7 +1,7 @@
 package io.swagger.api;
 
 import io.swagger.model.Body4;
-import io.swagger.model.InlineResponse200;
+import io.swagger.model.Response200;
 import io.swagger.model.InlineResponse2005;
 
 import io.swagger.annotations.*;
@@ -31,10 +31,10 @@ public class MessageApiController implements MessageApi {
         return new ResponseEntity<List<InlineResponse2005>>(HttpStatus.OK);
     }
 
-    public ResponseEntity<InlineResponse200> sendMessageOfTopic(@ApiParam(value = "ID of topic to return",required=true ) @PathVariable("topicId") Long topicId,
+    public ResponseEntity<Response200> sendMessageOfTopic(@ApiParam(value = "ID of topic to return",required=true ) @PathVariable("topicId") Long topicId,
         @ApiParam(value = "content placed for sending message." ,required=true ) @RequestBody Body4 body) {
         // do some magic!
-        return new ResponseEntity<InlineResponse200>(HttpStatus.OK);
+        return new ResponseEntity<Response200>(HttpStatus.OK);
     }
 
 }
