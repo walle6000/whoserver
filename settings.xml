@@ -8,9 +8,7 @@ regarding copyright ownership.  The ASF licenses this file
 to you under the Apache License, Version 2.0 (the
 "License"); you may not use this file except in compliance
 with the License.  You may obtain a copy of the License at
-
     http://www.apache.org/licenses/LICENSE-2.0
-
 Unless required by applicable law or agreed to in writing,
 software distributed under the License is distributed on an
 "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
@@ -49,12 +47,11 @@ under the License.
   <!-- localRepository
    | The path to the local repository maven will use to store artifacts.
    |
-   | Default: ~/.m2/repository
+   | Default: ${user.home}/.m2/repository
   <localRepository>/path/to/local/repo</localRepository>
-  
+  -->
+  <localRepository>D:\work\maven</localRepository>
 
-	<localRepository>D:/MavenRepository</localRepository>-->
-  
   <!-- interactiveMode
    | This will determine whether maven prompts you when it needs input. If set to false,
    | maven will use a sensible default value, perhaps based on some other setting, for
@@ -82,6 +79,7 @@ under the License.
      | Specifies a further group identifier to use for plugin lookup.
     <pluginGroup>com.your.plugins</pluginGroup>
     -->
+	<pluginGroup>org.mortbay.jetty</pluginGroup>
   </pluginGroups>
 
   <!-- proxies
@@ -133,16 +131,15 @@ under the License.
     </server>
     -->
 	<server>
-      <id>store-releases</id>
-      <username>deployment</username>
-      <password>deployment123</password>
-    </server>
-    
-    <server>
-      <id>store-snapshots</id>
-      <username>deployment</username>
-      <password>deployment123</password>
-    </server>
+		<id>releases</id>
+		<username>ali</username>
+		<password>ali</password>
+	  </server>
+	  <server>
+		<id>Snapshots</id>
+		<username>ali</username>
+		<password>ali</password>
+	  </server>
   </servers>
 
   <!-- mirrors
@@ -157,51 +154,6 @@ under the License.
    | server for that repository.
    |-->
   <mirrors>
-  <!--
-  <mirror>
-      <id>appfuse</id>
-      <mirrorOf>*</mirrorOf>
-      <name>App fuse.</name>
-      <url>https://oss.sonatype.org/content/repositories/appfuse</url>
-    </mirror>
-	
-  <mirror>
-      <id>officeNexus</id>
-      <mirrorOf>*</mirrorOf>
-      <name>Office Nexus for all artifacts.</name>
-      <url>https://repository.cloudera.com/artifactory/cloudera-repos/</url>
-    </mirror>
-	-->
-	<mirror>  
-      <id>repo2</id>  
-      <mirrorOf>central</mirrorOf>  
-      <name>Human Readable Name for this Mirror.</name>  
-      <url>http://repo2.maven.org/maven2/</url>  
-	</mirror>  
-	<mirror>  
-      <id>net-cn</id>  
-      <mirrorOf>central</mirrorOf>  
-      <name>Human Readable Name for this Mirror.</name>  
-      <url>http://maven.net.cn/content/groups/public/</url>   
-	</mirror>  
-	<mirror>  
-      <id>ui</id>  
-      <mirrorOf>central</mirrorOf>  
-      <name>Human Readable Name for this Mirror.</name>  
-     <url>http://uk.maven.org/maven2/</url>  
-	</mirror>
-	<mirror>  
-      <id>ibiblio</id>  
-      <mirrorOf>central</mirrorOf>  
-      <name>Human Readable Name for this Mirror.</name>  
-     <url>http://mirrors.ibiblio.org/pub/mirrors/maven2/</url>  
-	</mirror>  
-	<mirror>  
-      <id>jboss-public-repository-group</id>  
-      <mirrorOf>central</mirrorOf>  
-      <name>JBoss Public Repository Group</name>  
-     <url>http://repository.jboss.org/nexus/content/groups/public</url>  
-	</mirror> 
     <!-- mirror
      | Specifies a repository mirror site to use instead of a given repository. The repository that
      | this mirror serves has an ID that matches the mirrorOf element of this mirror. IDs are used
@@ -214,6 +166,19 @@ under the License.
       <url>http://my.repository.com/repo/path</url>
     </mirror>
      -->
+	<mirror>
+      <!--This sends everything else to /public -->
+      <id>nexus</id>
+      <mirrorOf>*</mirrorOf> 
+      <url>http://maven.aliyun.com/nexus/content/groups/public/</url>
+    </mirror>
+	<mirror>
+      <!--This is used to direct the public snapshots repo in the 
+          profile below over to a different nexus group -->
+      <id>nexus-public-snapshots</id>
+      <mirrorOf>public-snapshots</mirrorOf> 
+      <url>http://maven.aliyun.com/nexus/content/repositories/snapshots/</url>
+    </mirror>
   </mirrors>
   
   <!-- profiles
@@ -237,127 +202,50 @@ under the License.
    |       variables for plugins in the POM.
    |
    |-->
-  <profiles>
-  <profile>
-      <id>officeNexus</id>
+  <profiles> 
+	<profile>
+      <id>development</id>
       <repositories>
         <repository>
-          <id>nexus</id>
-          <name>Nexus</name>
-          <url>http://10.109.5.198:8081/nexus/content/groups/public/</url>
-          <layout>default</layout>
+          <id>central</id>
+          <url>http://central</url>
           <releases><enabled>true</enabled><updatePolicy>always</updatePolicy></releases>
           <snapshots><enabled>true</enabled><updatePolicy>always</updatePolicy></snapshots>
         </repository>
-		<!--
-		<repository>
-          <id>cloudera</id>
-          <name>Cloudera</name>
-          <url>https://repository.cloudera.com/artifactory/cloudera-repos/</url>
-          <layout>default</layout>
-          <releases><enabled>true</enabled><updatePolicy>always</updatePolicy></releases>
-          <snapshots><enabled>true</enabled><updatePolicy>always</updatePolicy></snapshots>
-        </repository>
-		-->
       </repositories>
-      <pluginRepositories>
-      	<pluginRepository>
-      	  <id>nexus</id>
-          <name>Nexus</name>
-          <url>http://10.109.5.198:8081/nexus/content/groups/public/</url>
-          <layout>default</layout>
+     <pluginRepositories>
+        <pluginRepository>
+          <id>central</id>
+          <url>http://central</url>
           <releases><enabled>true</enabled><updatePolicy>always</updatePolicy></releases>
           <snapshots><enabled>true</enabled><updatePolicy>always</updatePolicy></snapshots>
-      	</pluginRepository>
-		<!--
-		<pluginRepository>
-      	  <id>cloudera</id>
-          <name>Cloudera</name>
-          <url>https://repository.cloudera.com/artifactory/cloudera-repos/</url>
-          <layout>default</layout>
-          <releases><enabled>true</enabled><updatePolicy>always</updatePolicy></releases>
-          <snapshots><enabled>true</enabled><updatePolicy>always</updatePolicy></snapshots>
-      	</pluginRepository>
-		-->
+        </pluginRepository>
       </pluginRepositories>
-	  
     </profile>
-    <!-- profile
-     | Specifies a set of introductions to the build process, to be activated using one or more of the
-     | mechanisms described above. For inheritance purposes, and to activate profiles via <activatedProfiles/>
-     | or the command line, profiles have to have an ID that is unique.
-     |
-     | An encouraged best practice for profile identification is to use a consistent naming convention
-     | for profiles, such as 'env-dev', 'env-test', 'env-production', 'user-jdcasey', 'user-brett', etc.
-     | This will make it more intuitive to understand what the set of introduced profiles is attempting
-     | to accomplish, particularly when you only have a list of profile id's for debug.
-     |
-     | This profile example uses the JDK version to trigger activation, and provides a JDK-specific repo.
     <profile>
-      <id>jdk-1.4</id>
-
-      <activation>
-        <jdk>1.4</jdk>
-      </activation>
-
+      <!--this profile will allow snapshots to be searched when activated-->
+      <id>public-snapshots</id>
       <repositories>
         <repository>
-          <id>jdk14</id>
-          <name>Repository for JDK 1.4 builds</name>
-          <url>http://www.myhost.com/maven/jdk14</url>
-          <layout>default</layout>
-          <snapshotPolicy>always</snapshotPolicy>
+          <id>public-snapshots</id>
+          <url>http://public-snapshots</url>
+          <releases><enabled>false</enabled></releases>
+          <snapshots><enabled>true</enabled><updatePolicy>always</updatePolicy></snapshots>
         </repository>
       </repositories>
+     <pluginRepositories>
+        <pluginRepository>
+          <id>public-snapshots</id>
+          <url>http://public-snapshots</url>
+          <releases><enabled>false</enabled></releases>
+          <snapshots><enabled>true</enabled><updatePolicy>always</updatePolicy></snapshots>
+        </pluginRepository>
+      </pluginRepositories>
     </profile>
-    -->
-
-    <!--
-     | Here is another profile, activated by the system property 'target-env' with a value of 'dev',
-     | which provides a specific path to the Tomcat instance. To use this, your plugin configuration
-     | might hypothetically look like:
-     |
-     | ...
-     | <plugin>
-     |   <groupId>org.myco.myplugins</groupId>
-     |   <artifactId>myplugin</artifactId>
-     |   
-     |   <configuration>
-     |     <tomcatLocation>${tomcatPath}</tomcatLocation>
-     |   </configuration>
-     | </plugin>
-     | ...
-     |
-     | NOTE: If you just wanted to inject this configuration whenever someone set 'target-env' to
-     |       anything, you could just leave off the <value/> inside the activation-property.
-     |
-    <profile>
-      <id>env-dev</id>
-
-      <activation>
-        <property>
-          <name>target-env</name>
-          <value>dev</value>
-        </property>
-      </activation>
-
-      <properties>
-        <tomcatPath>/path/to/tomcat/instance</tomcatPath>
-      </properties>
-    </profile>
-    -->
   </profiles>
-
-  <activeProfiles>
-    <activeProfile>officeNexus</activeProfile>
-	<!--<activeProfile>sonar</activeProfile>-->
-  </activeProfiles>
-  <!-- activeProfiles
-   | List of profiles that are active for all builds.
-   |
-  <activeProfiles>
-    <activeProfile>alwaysActiveProfile</activeProfile>
-    <activeProfile>anotherAlwaysActiveProfile</activeProfile>
-  </activeProfiles>
-  -->
+ 
+   <activeProfiles>
+    <activeProfile>development</activeProfile>
+    <activeProfile>public-snapshots</activeProfile>
+   </activeProfiles>
 </settings>
