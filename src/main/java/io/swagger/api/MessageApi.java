@@ -1,8 +1,7 @@
 package io.swagger.api;
 
-import io.swagger.model.Body4;
 import io.swagger.model.Response200;
-import io.swagger.model.InlineResponse2005;
+import io.swagger.model.TopicMessage;
 
 import io.swagger.annotations.*;
 import org.springframework.http.ResponseEntity;
@@ -22,13 +21,13 @@ import javax.validation.constraints.*;
 @Api(value = "message", description = "the message API")
 public interface MessageApi {
 
-    @ApiOperation(value = "Returns the messages of topic.", notes = "", response = InlineResponse2005.class, responseContainer = "List", tags={ "message", })
+    @ApiOperation(value = "Returns the messages of topic.", notes = "", response = TopicMessage.class, responseContainer = "List", tags={ "message", })
     @ApiResponses(value = { 
-        @ApiResponse(code = 200, message = "successful operation", response = InlineResponse2005.class) })
+        @ApiResponse(code = 200, message = "successful operation", response = TopicMessage.class) })
     @RequestMapping(value = "/message/{topicId}/receive",
-        produces = { "application/xml", "application/json" }, 
+        produces = { "application/json" }, 
         method = RequestMethod.GET)
-    ResponseEntity<List<InlineResponse2005>> getMessagesOfTopic(@ApiParam(value = "ID of topic to return",required=true ) @PathVariable("topicId") Long topicId);
+    ResponseEntity<List<TopicMessage>> getMessagesOfTopic(@ApiParam(value = "ID of topic to return",required=true ) @PathVariable("topicId") Long topicId);
 
 
     @ApiOperation(value = "send an message to other users in a topic", notes = "", response = Response200.class, tags={ "message", })
@@ -39,10 +38,10 @@ public interface MessageApi {
         @ApiResponse(code = 404, message = "Topic not found", response = Response200.class),
         @ApiResponse(code = 405, message = "Validation exception", response = Response200.class) })
     @RequestMapping(value = "/message/{topicId}/send",
-        produces = { "application/xml", "application/json" }, 
-        consumes = { "application/json", "application/xml" },
+        produces = { "application/json" }, 
+        consumes = { "application/json" },
         method = RequestMethod.POST)
     ResponseEntity<Response200> sendMessageOfTopic(@ApiParam(value = "ID of topic to return",required=true ) @PathVariable("topicId") Long topicId,
-        @ApiParam(value = "content placed for sending message." ,required=true ) @RequestBody Body4 body);
+        @ApiParam(value = "content placed for sending message." ,required=true ) @RequestBody TopicMessage message);
 
 }

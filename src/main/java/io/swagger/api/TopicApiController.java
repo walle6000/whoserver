@@ -1,12 +1,9 @@
 package io.swagger.api;
 
-import io.swagger.model.Body2;
-import io.swagger.model.Body3;
 import java.io.File;
 import io.swagger.model.Response200;
-import io.swagger.model.InlineResponse2002;
-import io.swagger.model.InlineResponse2003;
-import io.swagger.model.InlineResponse2004;
+import io.swagger.model.Topic;
+import io.swagger.model.TopicTopology;
 
 import io.swagger.annotations.*;
 
@@ -30,7 +27,7 @@ public class TopicApiController implements TopicApi {
 
 
 
-    public ResponseEntity<Response200> addTopic(@ApiParam(value = "Topic object that needs to be added to the store" ,required=true ) @RequestBody Body3 body) {
+    public ResponseEntity<Response200> addTopic(@ApiParam(value = "Topic object that needs to be added to the store" ,required=true ) @RequestBody Topic topic) {
         // do some magic!
         return new ResponseEntity<Response200>(HttpStatus.OK);
     }
@@ -46,29 +43,29 @@ public class TopicApiController implements TopicApi {
         return new ResponseEntity<Void>(HttpStatus.OK);
     }
 
-    public ResponseEntity<List<InlineResponse2002>> findTopicsByStatus( @NotNull @ApiParam(value = "Status values that need to be considered for filter", required = true, allowableValues = "AVAILABLE, PENDING, CLOSE") @RequestParam(value = "status", required = true) List<String> status) {
+    public ResponseEntity<List<Topic>> findTopicsByStatus( @NotNull @ApiParam(value = "Status values that need to be considered for filter", required = true, allowableValues = "AVAILABLE, PENDING, CLOSE") @RequestParam(value = "status", required = true) List<String> status) {
         // do some magic!
-        return new ResponseEntity<List<InlineResponse2002>>(HttpStatus.OK);
+        return new ResponseEntity<List<Topic>>(HttpStatus.OK);
     }
 
-    public ResponseEntity<List<InlineResponse2002>> findTopicsByTags( @NotNull @ApiParam(value = "Tags to filter by", required = true) @RequestParam(value = "tags", required = true) List<String> tags) {
+    public ResponseEntity<List<Topic>> findTopicsByTags( @NotNull @ApiParam(value = "Tags to filter by", required = true) @RequestParam(value = "tags", required = true) List<String> tags) {
         // do some magic!
-        return new ResponseEntity<List<InlineResponse2002>>(HttpStatus.OK);
+        return new ResponseEntity<List<Topic>>(HttpStatus.OK);
     }
 
-    public ResponseEntity<List<InlineResponse2004>> getParticipatorByTopicId(@ApiParam(value = "ID of topic to return",required=true ) @PathVariable("topicId") Long topicId) {
+    public ResponseEntity<List<TopicTopology>> getParticipatorByTopicId(@ApiParam(value = "ID of topic to return",required=true ) @PathVariable("topicId") Long topicId) {
         // do some magic!
-        return new ResponseEntity<List<InlineResponse2004>>(HttpStatus.OK);
+        return new ResponseEntity<List<TopicTopology>>(HttpStatus.OK);
     }
 
-    public ResponseEntity<InlineResponse2003> getTopicById(@ApiParam(value = "ID of topic to return",required=true ) @PathVariable("topicId") Long topicId) {
+    public ResponseEntity<Topic> getTopicById(@ApiParam(value = "ID of topic to return",required=true ) @PathVariable("topicId") Long topicId) {
         // do some magic!
-        return new ResponseEntity<InlineResponse2003>(HttpStatus.OK);
+        return new ResponseEntity<Topic>(HttpStatus.OK);
     }
 
-    public ResponseEntity<List<InlineResponse2002>> getTopics() {
+    public ResponseEntity<List<Topic>> getTopics() {
         // do some magic!
-        return new ResponseEntity<List<InlineResponse2002>>(HttpStatus.OK);
+        return new ResponseEntity<List<Topic>>(HttpStatus.OK);
     }
 
     public ResponseEntity<Response200> sendTopicToUser(@ApiParam(value = "ID of topic to send.",required=true ) @PathVariable("topicId") Long topicId,
@@ -78,7 +75,7 @@ public class TopicApiController implements TopicApi {
         return new ResponseEntity<Response200>(HttpStatus.OK);
     }
 
-    public ResponseEntity<Response200> updateTopic(@ApiParam(value = "Topic object that needs to be added to the store" ,required=true ) @RequestBody Body2 body) {
+    public ResponseEntity<Response200> updateTopic(@ApiParam(value = "Topic object that needs to be added to the store" ,required=true ) @RequestBody Topic topic) {
         // do some magic!
         return new ResponseEntity<Response200>(HttpStatus.OK);
     }

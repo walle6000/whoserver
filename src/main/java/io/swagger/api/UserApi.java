@@ -1,10 +1,7 @@
 package io.swagger.api;
 
-import io.swagger.model.Body;
-import io.swagger.model.Body1;
 import io.swagger.model.Response200;
 import io.swagger.model.User;
-import io.swagger.model.InlineResponse2001;
 import java.util.Map;
 
 import io.swagger.annotations.*;
@@ -30,8 +27,8 @@ public interface UserApi {
         @ApiResponse(code = 200, message = "successful operation", response = Response200.class),
         @ApiResponse(code = 405, message = "invalid exception", response = Response200.class) })
     @RequestMapping(value = "/user",
-        produces = { "application/xml", "application/json" }, 
-        consumes = { "application/json", "application/xml" },
+        produces = { "application/json" }, 
+        consumes = { "application/json" },
         method = RequestMethod.POST)
     ResponseEntity<Response200> createUser(@ApiParam(value = "Created user object" ,required=true ) @RequestBody User user);
 
@@ -42,7 +39,7 @@ public interface UserApi {
         @ApiResponse(code = 401, message = "Invalid user authority", response = Void.class),
         @ApiResponse(code = 404, message = "User not found", response = Void.class) })
     @RequestMapping(value = "/user/{userId}",
-        produces = { "application/xml", "application/json" }, 
+        produces = { "application/json" }, 
         method = RequestMethod.DELETE)
     ResponseEntity<Void> deleteUser(@ApiParam(value = "The id that needs to be deleted",required=true ) @PathVariable("userId") String userId);
 
@@ -64,7 +61,7 @@ public interface UserApi {
         @ApiResponse(code = 401, message = "Invalid user authority", response = User.class),
         @ApiResponse(code = 404, message = "User not found", response = User.class) })
     @RequestMapping(value = "/user/{userId}",
-        produces = { "application/xml", "application/json" }, 
+        produces = {"application/json"}, 
         method = RequestMethod.GET)
     ResponseEntity<User> getUserById(@ApiParam(value = "The user id that needs to be fetched.",required=true ) @PathVariable("userId") String userId);
 
@@ -75,7 +72,7 @@ public interface UserApi {
         @ApiResponse(code = 400, message = "Invalid username/password supplied", response = Response200.class),
         @ApiResponse(code = 405, message = "invalid exception", response = Response200.class) })
     @RequestMapping(value = "/user/login",
-        produces = { "application/xml", "application/json" }, 
+        produces = { "application/json" }, 
         method = RequestMethod.GET)
     ResponseEntity<Response200> loginUser( @NotNull @ApiParam(value = "The user name for login", required = true) @RequestParam(value = "username", required = true) String username,
          @NotNull @ApiParam(value = "The password for login in clear text", required = true) @RequestParam(value = "password", required = true) String password);
@@ -85,7 +82,7 @@ public interface UserApi {
     @ApiResponses(value = { 
         @ApiResponse(code = 200, message = "successful operation", response = Void.class) })
     @RequestMapping(value = "/user/logout",
-        produces = { "application/xml", "application/json" }, 
+        produces = { "application/json" }, 
         method = RequestMethod.GET)
     ResponseEntity<Void> logoutUser();
 
@@ -96,9 +93,9 @@ public interface UserApi {
         @ApiResponse(code = 401, message = "Invalid user authority", response = Void.class),
         @ApiResponse(code = 404, message = "User not found", response = Void.class) })
     @RequestMapping(value = "/user/{userId}",
-        produces = { "application/xml", "application/json" }, 
+        produces = { "application/json" }, 
         method = RequestMethod.PUT)
     ResponseEntity<Void> updateUser(@ApiParam(value = "id that need to be updated",required=true ) @PathVariable("userId") String userId,
-        @ApiParam(value = "Updated user object" ,required=true ) @RequestBody Body1 body);
+        @ApiParam(value = "Updated user object" ,required=true ) @RequestBody User user);
 
 }

@@ -1,10 +1,7 @@
 package io.swagger.api;
 
-import io.swagger.model.Body;
-import io.swagger.model.Body1;
 import io.swagger.model.Response200;
 import io.swagger.model.User;
-import io.swagger.model.InlineResponse2001;
 import io.swagger.service.UserService;
 
 import java.util.Map;
@@ -21,13 +18,14 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 
 import javax.validation.constraints.*;
 @javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2017-07-05T03:12:51.178Z")
 
-@Controller
+@RestController
 public class UserApiController implements UserApi {
 	
 	private Logger logger = LoggerFactory.getLogger(UserApiController.class);
@@ -74,7 +72,7 @@ public class UserApiController implements UserApi {
     }
 
     public ResponseEntity<Void> updateUser(@ApiParam(value = "id that need to be updated",required=true ) @PathVariable("userId") String userId,
-        @ApiParam(value = "Updated user object" ,required=true ) @RequestBody Body1 body) {
+        @ApiParam(value = "Updated user object" ,required=true ) @RequestBody User user) {
         // do some magic!
         return new ResponseEntity<Void>(HttpStatus.OK);
     }
