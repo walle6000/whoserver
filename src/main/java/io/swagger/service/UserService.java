@@ -4,7 +4,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
+import io.swagger.common.CacheType;
+import io.swagger.common.UserStatus;
 import io.swagger.dao.UserDao;
 import io.swagger.model.User;
 
@@ -16,6 +19,9 @@ public class UserService {
 	@Autowired
 	private UserDao userDao;
 	
+	@Autowired
+	private RedisService redisService;
+	
 	public void saveUser(User user){
 		logger.info("UserService - saveUser: user\n" + user);
 		userDao.save(user);
@@ -26,5 +32,32 @@ public class UserService {
 		logger.info("UserService - getUserByUserid: userid="+userid);
 		User user = userDao.findByUserid(userid);
 		return user;
+	}
+	
+	public UserStatus checkUser(User user,String sessionId){
+		String userId = user.getUserid();
+		String password = user.getPassword();
+		String verifyCode = user.getIdentifyCode();
+		if(StringUtils.isEmpty(userId)){
+			return UserStatus.userIdEmpty;
+		}
+		if(StringUtils.isEmpty(password)){
+			return UserStatus.passwordEmpty;
+		}
+		if(StringUtils.isEmpty(verifyCode)){
+			return UserStatus.identityEmpty;
+		}
+        String cachedCode = redisService.get(redisService.getMD5CacheKey(CacheType.verfifyCode, sessionId));
+        if(StringUtils.isEmpty(cachedCode)){
+			return UserStatus.identityExpired;
+		}
+        if(!verifyCode.equalsIgnoreCase(cachedCode)){
+        	return UserStatus.identityWrong;
+        }
+        User existUser = getUserByUserid(userId);
+        if(existUser != null){
+        	return UserStatus.userIdExist;
+        }
+		return UserStatus.OK;
 	}
 }

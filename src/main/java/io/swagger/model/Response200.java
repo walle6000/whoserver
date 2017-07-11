@@ -12,10 +12,10 @@ import javax.validation.constraints.*;
 @javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2017-07-05T03:12:51.178Z")
 
 public class Response200   {
- public static final int ERROR = 1;
+ public static final int OK = 1;
  public static final int WARNING = 2;
  public static final int INFO = 3;
- public static final int OK = 4;
+ public static final int ERROR = 4;
  public static final int TOO_BUSY = 5;
 
 	

@@ -51,7 +51,7 @@ public class User implements Serializable  {
 
   @JsonProperty("userStatus")
   @Column(name="userstatus")
-  private Integer userStatus = null;
+  private Integer userStatus = 0;
 
   public User id(Long id) {
     this.id = id;

@@ -7,6 +7,8 @@ import io.swagger.service.UserService;
 import java.util.Map;
 
 import io.swagger.annotations.*;
+import io.swagger.common.UserStatus;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +23,8 @@ import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import javax.validation.constraints.*;
 @javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2017-07-05T03:12:51.178Z")
 
@@ -33,12 +36,46 @@ public class UserApiController implements UserApi {
 	@Autowired
 	private UserService userService;
 
-    public ResponseEntity<Response200> createUser(@ApiParam(value = "Created user object" ,required=true ) @RequestBody User user) {
+    public ResponseEntity<Response200> createUser(@ApiParam(value = "Created user object" ,required=true ) @RequestBody User user,HttpServletRequest req) {
         // do some magic!
     	logger.info("UserApiController - createUser: User is\n" + user);
-    	userService.saveUser(user);
-    	logger.info("UserApiController - createUser is successful.");
-    	Response200 response = new Response200(4,"create user successfully");
+    	HttpSession session = req.getSession(true); 
+        String sessionId = session.getId();
+        UserStatus us = userService.checkUser(user, sessionId);
+        Response200 response = null;
+        switch(us){
+        case OK:
+        	   logger.info("UserApiController - User checking is successful.");
+        	   userService.saveUser(user);
+               logger.info("UserApiController - createUser is successful.");
+               response = new Response200(1,"create user successfully");
+               break;
+        case userIdEmpty:
+        	   logger.info("UserApiController - User checking is fail<userid is empty>.");
+               response = new Response200(2,"userid is empty");
+               break;
+        case userIdExist:
+        	   logger.info("UserApiController - User checking is fail<userid existed>.");
+        	   response = new Response200(2,"userid existed");
+               break;
+        case passwordEmpty:
+        	   logger.info("UserApiController - User checking is fail<password is empty>.");
+     	       response = new Response200(2,"password is empty");
+               break;
+        case identityEmpty:
+        	   logger.info("UserApiController - User checking is fail<verify code is empty>.");
+  	           response = new Response200(2,"verify code is empty");
+               break;
+        case identityExpired:
+        	   logger.info("UserApiController - User checking is fail<verify code Expired>.");
+	           response = new Response200(2,"verify code Expired");
+               break;
+        case identityWrong:
+        	   logger.info("UserApiController - User checking is fail<verify code is wrong>.");
+	           response = new Response200(2,"verify code is wrong");
+               break;
+        default:break;
+        }
         return new ResponseEntity<Response200>(response,HttpStatus.OK);
     }
 
