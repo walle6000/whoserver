@@ -3,6 +3,7 @@ package io.swagger.service;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.data.redis.connection.RedisConnection;
@@ -11,7 +12,10 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.serializer.RedisSerializer;
 import org.springframework.stereotype.Service;
 
-import net.minidev.json.JSONUtil;
+import io.swagger.common.CacheType;
+import io.swagger.utils.JSONUtil;
+
+
 
 @Service
 public class RedisService {
@@ -43,28 +47,54 @@ public class RedisService {
         return result;  
     }  
   
-    public boolean expire(final String key, long expire) {  
+    public boolean set(final String key, final String value, final long expire) {
+    	boolean result = this.set(key, value);
+    	if(result){
+    		this.expire(key, expire);
+    	}
+    	return result;
+    }
+    
+    public boolean expire(final String key, long expire) {
         return redisTemplate.expire(key, expire, TimeUnit.SECONDS);  
     }  
   
-    public <T> boolean setList(String key, List<T> list) {  
+    public <T> boolean setList(String key, List<T> list) {
         String value = JSONUtil.toJson(list);  
         return set(key,value);  
     }  
   
-    public <T> List<T> getList(String key,Class<T> clz) {  
+    public <T> List<T> getList(String key,Class<T> clz) {
         String json = get(key);  
-        if(json!=null){  
+        if(json!=null){ 
             List<T> list = JSONUtil.toList(json, clz);  
             return list;  
         }  
         return null;  
-    }  
+    }
+    
+    public <T> boolean setObjct(String key, T object){
+    	String value = JSONUtil.toJson(object);
+    	 return set(key,value);
+    }
+    
+    public <T> T getObject(String key, Class<T> clz){
+    	String json = get(key);
+    	if(json!=null){
+    		 T object = JSONUtil.toBean(json, clz);
+    		 return object;
+    	}
+    	return null;
+    }
+    
+	public void remove(String key) {
+		redisTemplate.delete(key);
+	}
   
     public long lpush(final String key, Object obj) {  
         final String value = JSONUtil.toJson(obj);  
         long result = redisTemplate.execute(new RedisCallback<Long>() {  
-            @Override  
+            @Override
             public Long doInRedis(RedisConnection connection) throws DataAccessException {  
                 RedisSerializer<String> serializer = redisTemplate.getStringSerializer();  
                 long count = connection.lPush(serializer.serialize(key), serializer.serialize(value));  
@@ -77,7 +107,7 @@ public class RedisService {
     public long rpush(final String key, Object obj) {  
         final String value = JSONUtil.toJson(obj);  
         long result = redisTemplate.execute(new RedisCallback<Long>() {  
-            @Override  
+            @Override
             public Long doInRedis(RedisConnection connection) throws DataAccessException {  
                 RedisSerializer<String> serializer = redisTemplate.getStringSerializer();  
                 long count = connection.rPush(serializer.serialize(key), serializer.serialize(value));  
@@ -89,7 +119,7 @@ public class RedisService {
   
     public String lpop(final String key) {  
         String result = redisTemplate.execute(new RedisCallback<String>() {  
-            @Override  
+            @Override
             public String doInRedis(RedisConnection connection) throws DataAccessException {  
                 RedisSerializer<String> serializer = redisTemplate.getStringSerializer();  
                 byte[] res =  connection.lPop(serializer.serialize(key));  
@@ -98,4 +128,20 @@ public class RedisService {
         });  
         return result;  
     }  
+    
+    /**
+	 * 获取MD5后的缓存key
+	 * @param cacheType
+	 * @param cacheKeyElements
+	 * @return
+	 */
+	public String getMD5CacheKey(CacheType cacheType, Object... cacheKeyElements) {
+		StringBuilder keySb = new StringBuilder();
+		keySb.append(cacheType.name());
+		for (Object keyElement : cacheKeyElements) {
+			keySb.append(".").append(keyElement);
+		}
+		return DigestUtils.md5Hex(keySb.toString());
+	}
+    
 }
