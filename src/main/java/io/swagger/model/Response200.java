@@ -27,6 +27,9 @@ public class Response200   {
 
   @JsonProperty("message")
   private String message = null;
+  
+  @JsonProperty("accessToken")
+  private AccessToken accessToken;
 
   public Response200(int code){
 		this.code = code;
@@ -77,6 +80,32 @@ public class Response200   {
 		this.message = message;
 	}
   
+  
+  public Response200(int code, String message,AccessToken accessToken){
+		this.code = code;
+		switch(code){
+		case ERROR:
+			setType("error");
+			break;
+		case WARNING:
+			setType("warning");
+			break;
+		case INFO:
+			setType("info");
+			break;
+		case OK:
+			setType("ok");
+			break;
+		case TOO_BUSY:
+			setType("too busy");
+			break;
+		default:
+			setType("unknown");
+			break;
+		}
+		this.message = message;
+		this.accessToken = accessToken;
+	}
   
   public Response200 code(Integer code) {
 	    this.code = code;
@@ -130,9 +159,17 @@ public class Response200   {
   public void setMessage(String message) {
     this.message = message;
   }
+  
 
+  public AccessToken getAccessToken() {
+	return accessToken;
+}
 
-  @Override
+public void setAccessToken(AccessToken accessToken) {
+	this.accessToken = accessToken;
+}
+
+@Override
   public boolean equals(java.lang.Object o) {
     if (this == o) {
       return true;

@@ -52,6 +52,10 @@ public class User implements Serializable  {
   @JsonProperty("userStatus")
   @Column(name="userstatus")
   private Integer userStatus = 0;
+  
+  @JsonProperty("role")
+  @Column(name="role")
+  private String role = "endUser";
 
   public User id(Long id) {
     this.id = id;
@@ -163,8 +167,20 @@ public class User implements Serializable  {
     this.userStatus = userStatus;
   }
 
+  /**
+   * User role
+   * @return role
+  **/
+  @ApiModelProperty(value = "User role")
+  public String getRole() {
+	return role;
+  }
 
-  @Override
+  public void setRole(String role) {
+	this.role = role;
+  }
+
+@Override
   public boolean equals(java.lang.Object o) {
     if (this == o) {
       return true;
@@ -178,12 +194,13 @@ public class User implements Serializable  {
         Objects.equals(this.password, user.password) &&
         Objects.equals(this.identifyCode, user.identifyCode) &&
         Objects.equals(this.userProfile, user.userProfile) &&
-        Objects.equals(this.userStatus, user.userStatus);
+        Objects.equals(this.userStatus, user.userStatus)&&
+        Objects.equals(this.role, user.role);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, userid, password, identifyCode, userProfile, userStatus);
+    return Objects.hash(id, userid, password, identifyCode, userProfile, userStatus, role);
   }
 
   @Override
@@ -197,6 +214,7 @@ public class User implements Serializable  {
     sb.append("    identifyCode: ").append(toIndentedString(identifyCode)).append("\n");
     sb.append("    userProfile: ").append(toIndentedString(userProfile)).append("\n");
     sb.append("    userStatus: ").append(toIndentedString(userStatus)).append("\n");
+    sb.append("    role: ").append(toIndentedString(role)).append("\n");
     sb.append("}");
     return sb.toString();
   }

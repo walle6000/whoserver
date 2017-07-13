@@ -1,8 +1,10 @@
 package io.swagger.api;
 
+import io.swagger.model.AccessToken;
 import io.swagger.model.Response200;
 import io.swagger.model.User;
 import io.swagger.service.UserService;
+import io.swagger.service.WebTokenService;
 
 import java.util.Map;
 
@@ -35,6 +37,9 @@ public class UserApiController implements UserApi {
 
 	@Autowired
 	private UserService userService;
+	
+	@Autowired
+	private WebTokenService webTokenService;
 
     public ResponseEntity<Response200> createUser(@ApiParam(value = "Created user object" ,required=true ) @RequestBody User user,HttpServletRequest req) {
         // do some magic!
@@ -48,7 +53,12 @@ public class UserApiController implements UserApi {
         	   logger.info("UserApiController - User checking is successful.");
         	   userService.saveUser(user);
                logger.info("UserApiController - createUser is successful.");
-               response = new Response200(1,"create user successfully");
+               logger.info("UserApiController - createUser new id is:"+user.getId());
+               logger.info("UserApiController - createUser new userid is:"+user.getUserid());
+               logger.info("UserApiController - createUser new user role is:"+user.getRole());
+               logger.info("UserApiController - createUser get access token.");
+               AccessToken accessToken = webTokenService.getAccessToken(user);
+               response = new Response200(1,"create user successfully",accessToken);
                break;
         case userIdEmpty:
         	   logger.info("UserApiController - User checking is fail<userid is empty>.");
