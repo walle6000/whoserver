@@ -11,7 +11,7 @@ import javax.validation.constraints.*;
  */
 @javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2017-07-05T03:12:51.178Z")
 
-public class Response200   {
+public class ResultMsg   {
  public static final int OK = 1;
  public static final int WARNING = 2;
  public static final int INFO = 3;
@@ -31,7 +31,7 @@ public class Response200   {
   @JsonProperty("accessToken")
   private AccessToken accessToken;
 
-  public Response200(int code){
+  public ResultMsg(int code){
 		this.code = code;
 		switch(code){
 		case ERROR:
@@ -55,7 +55,7 @@ public class Response200   {
 		}
 	}
 
-  public Response200(int code, String message){
+  public ResultMsg(int code, String message){
 		this.code = code;
 		switch(code){
 		case ERROR:
@@ -81,7 +81,7 @@ public class Response200   {
 	}
   
   
-  public Response200(int code, String message,AccessToken accessToken){
+  public ResultMsg(int code, String message,AccessToken accessToken){
 		this.code = code;
 		switch(code){
 		case ERROR:
@@ -107,7 +107,7 @@ public class Response200   {
 		this.accessToken = accessToken;
 	}
   
-  public Response200 code(Integer code) {
+  public ResultMsg code(Integer code) {
 	    this.code = code;
 	    return this;
 	  }
@@ -124,7 +124,7 @@ public class Response200   {
     this.code = code;
   }
 
-  public Response200 type(String type) {
+  public ResultMsg type(String type) {
     this.type = type;
     return this;
   }
@@ -142,7 +142,7 @@ public class Response200   {
     this.type = type;
   }
 
-  public Response200 message(String message) {
+  public ResultMsg message(String message) {
     this.message = message;
     return this;
   }
@@ -177,7 +177,7 @@ public void setAccessToken(AccessToken accessToken) {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    Response200 response200 = (Response200) o;
+    ResultMsg response200 = (ResultMsg) o;
     return Objects.equals(this.code, response200.code) &&
         Objects.equals(this.type, response200.type) &&
         Objects.equals(this.message, response200.message);

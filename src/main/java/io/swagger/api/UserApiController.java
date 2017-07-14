@@ -1,7 +1,7 @@
 package io.swagger.api;
 
 import io.swagger.model.AccessToken;
-import io.swagger.model.Response200;
+import io.swagger.model.ResultMsg;
 import io.swagger.model.User;
 import io.swagger.service.UserService;
 import io.swagger.service.WebTokenService;
@@ -41,13 +41,13 @@ public class UserApiController implements UserApi {
 	@Autowired
 	private WebTokenService webTokenService;
 
-    public ResponseEntity<Response200> createUser(@ApiParam(value = "Created user object" ,required=true ) @RequestBody User user,HttpServletRequest req) {
+    public ResponseEntity<ResultMsg> createUser(@ApiParam(value = "Created user object" ,required=true ) @RequestBody User user,HttpServletRequest req) {
         // do some magic!
     	logger.info("UserApiController - createUser: User is\n" + user);
     	HttpSession session = req.getSession(true); 
         String sessionId = session.getId();
         UserStatus us = userService.checkUser(user, sessionId);
-        Response200 response = null;
+        ResultMsg response = null;
         switch(us){
         case OK:
         	   logger.info("UserApiController - User checking is successful.");
@@ -58,35 +58,35 @@ public class UserApiController implements UserApi {
                logger.info("UserApiController - createUser new user role is:"+user.getRole());
                logger.info("UserApiController - createUser get access token.");
                AccessToken accessToken = webTokenService.getAccessToken(user);
-               response = new Response200(1,"create user successfully",accessToken);
+               response = new ResultMsg(1,"create user successfully",accessToken);
                break;
         case userIdEmpty:
         	   logger.info("UserApiController - User checking is fail<userid is empty>.");
-               response = new Response200(2,"userid is empty");
+               response = new ResultMsg(2,"userid is empty");
                break;
         case userIdExist:
         	   logger.info("UserApiController - User checking is fail<userid existed>.");
-        	   response = new Response200(2,"userid existed");
+        	   response = new ResultMsg(2,"userid existed");
                break;
         case passwordEmpty:
         	   logger.info("UserApiController - User checking is fail<password is empty>.");
-     	       response = new Response200(2,"password is empty");
+     	       response = new ResultMsg(2,"password is empty");
                break;
         case identityEmpty:
         	   logger.info("UserApiController - User checking is fail<verify code is empty>.");
-  	           response = new Response200(2,"verify code is empty");
+  	           response = new ResultMsg(2,"verify code is empty");
                break;
         case identityExpired:
         	   logger.info("UserApiController - User checking is fail<verify code Expired>.");
-	           response = new Response200(2,"verify code Expired");
+	           response = new ResultMsg(2,"verify code Expired");
                break;
         case identityWrong:
         	   logger.info("UserApiController - User checking is fail<verify code is wrong>.");
-	           response = new Response200(2,"verify code is wrong");
+	           response = new ResultMsg(2,"verify code is wrong");
                break;
         default:break;
         }
-        return new ResponseEntity<Response200>(response,HttpStatus.OK);
+        return new ResponseEntity<ResultMsg>(response,HttpStatus.OK);
     }
 
     public ResponseEntity<Void> deleteUser(@ApiParam(value = "The id that needs to be deleted",required=true ) @PathVariable("userId") String userId) {
@@ -107,10 +107,10 @@ public class UserApiController implements UserApi {
         return new ResponseEntity<User>(user,HttpStatus.OK);
     }
 
-    public ResponseEntity<Response200> loginUser( @NotNull @ApiParam(value = "The user name for login", required = true) @RequestParam(value = "username", required = true) String username,
+    public ResponseEntity<ResultMsg> loginUser( @NotNull @ApiParam(value = "The user name for login", required = true) @RequestParam(value = "username", required = true) String username,
          @NotNull @ApiParam(value = "The password for login in clear text", required = true) @RequestParam(value = "password", required = true) String password) {
         // do some magic!
-        return new ResponseEntity<Response200>(HttpStatus.OK);
+        return new ResponseEntity<ResultMsg>(HttpStatus.OK);
     }
 
     public ResponseEntity<Void> logoutUser() {

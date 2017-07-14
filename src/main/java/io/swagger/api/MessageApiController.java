@@ -1,6 +1,6 @@
 package io.swagger.api;
 
-import io.swagger.model.Response200;
+import io.swagger.model.ResultMsg;
 import io.swagger.model.TopicMessage;
 
 import io.swagger.annotations.*;
@@ -30,10 +30,10 @@ public class MessageApiController implements MessageApi {
         return new ResponseEntity<List<TopicMessage>>(HttpStatus.OK);
     }
 
-    public ResponseEntity<Response200> sendMessageOfTopic(@ApiParam(value = "ID of topic to return",required=true ) @PathVariable("topicId") Long topicId,
+    public ResponseEntity<ResultMsg> sendMessageOfTopic(@ApiParam(value = "ID of topic to return",required=true ) @PathVariable("topicId") Long topicId,
         @ApiParam(value = "content placed for sending message." ,required=true ) @RequestBody TopicMessage message) {
         // do some magic!
-        return new ResponseEntity<Response200>(HttpStatus.OK);
+        return new ResponseEntity<ResultMsg>(HttpStatus.OK);
     }
 
 }

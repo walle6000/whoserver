@@ -1,6 +1,6 @@
 package io.swagger.api;
 
-import io.swagger.model.Response200;
+import io.swagger.model.ResultMsg;
 import io.swagger.model.User;
 import java.util.Map;
 
@@ -24,15 +24,15 @@ import javax.validation.constraints.*;
 @Api(value = "user", description = "the user API")
 public interface UserApi {
 
-    @ApiOperation(value = "Create user", notes = "Create user when first login system.", response = Response200.class, tags={ "user", })
+    @ApiOperation(value = "Create user", notes = "Create user when first login system.", response = ResultMsg.class, tags={ "user", })
     @ApiResponses(value = { 
-        @ApiResponse(code = 200, message = "successful operation", response = Response200.class),
-        @ApiResponse(code = 405, message = "invalid exception", response = Response200.class) })
+        @ApiResponse(code = 200, message = "successful operation", response = ResultMsg.class),
+        @ApiResponse(code = 405, message = "invalid exception", response = ResultMsg.class) })
     @RequestMapping(value = "/user",
         produces = { "application/json" }, 
         consumes = { "application/json" },
         method = RequestMethod.POST)
-    ResponseEntity<Response200> createUser(@ApiParam(value = "Created user object" ,required=true ) @RequestBody User user,HttpServletRequest req);
+    ResponseEntity<ResultMsg> createUser(@ApiParam(value = "Created user object" ,required=true ) @RequestBody User user,HttpServletRequest req);
 
 
     @ApiOperation(value = "Delete user", notes = "This can only be done by the logged in user.", response = Void.class, tags={ "user", })
@@ -68,15 +68,15 @@ public interface UserApi {
     ResponseEntity<User> getUserById(@ApiParam(value = "The user id that needs to be fetched.",required=true ) @PathVariable("userId") String userId);
 
 
-    @ApiOperation(value = "Logs user into the system", notes = "", response = Response200.class, tags={ "user", })
+    @ApiOperation(value = "Logs user into the system", notes = "", response = ResultMsg.class, tags={ "user", })
     @ApiResponses(value = { 
-        @ApiResponse(code = 200, message = "successful operation", response = Response200.class),
-        @ApiResponse(code = 400, message = "Invalid username/password supplied", response = Response200.class),
-        @ApiResponse(code = 405, message = "invalid exception", response = Response200.class) })
+        @ApiResponse(code = 200, message = "successful operation", response = ResultMsg.class),
+        @ApiResponse(code = 400, message = "Invalid username/password supplied", response = ResultMsg.class),
+        @ApiResponse(code = 405, message = "invalid exception", response = ResultMsg.class) })
     @RequestMapping(value = "/user/login",
         produces = { "application/json" }, 
         method = RequestMethod.GET)
-    ResponseEntity<Response200> loginUser( @NotNull @ApiParam(value = "The user name for login", required = true) @RequestParam(value = "username", required = true) String username,
+    ResponseEntity<ResultMsg> loginUser( @NotNull @ApiParam(value = "The user name for login", required = true) @RequestParam(value = "username", required = true) String username,
          @NotNull @ApiParam(value = "The password for login in clear text", required = true) @RequestParam(value = "password", required = true) String password);
 
 

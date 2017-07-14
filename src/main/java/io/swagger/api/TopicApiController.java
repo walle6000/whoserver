@@ -1,7 +1,7 @@
 package io.swagger.api;
 
 import java.io.File;
-import io.swagger.model.Response200;
+import io.swagger.model.ResultMsg;
 import io.swagger.model.Topic;
 import io.swagger.model.TopicTopology;
 
@@ -27,15 +27,15 @@ public class TopicApiController implements TopicApi {
 
 
 
-    public ResponseEntity<Response200> addTopic(@ApiParam(value = "Topic object that needs to be added to the store" ,required=true ) @RequestBody Topic topic) {
+    public ResponseEntity<ResultMsg> addTopic(@ApiParam(value = "Topic object that needs to be added to the store" ,required=true ) @RequestBody Topic topic) {
         // do some magic!
-        return new ResponseEntity<Response200>(HttpStatus.OK);
+        return new ResponseEntity<ResultMsg>(HttpStatus.OK);
     }
 
-    public ResponseEntity<Response200> addUserForTopic(@ApiParam(value = "ID of topic to update",required=true ) @PathVariable("topicId") Long topicId,
+    public ResponseEntity<ResultMsg> addUserForTopic(@ApiParam(value = "ID of topic to update",required=true ) @PathVariable("topicId") Long topicId,
         @ApiParam(value = "person who send the topic.", required=true ) @RequestPart(value="sender", required=true)  String sender) {
         // do some magic!
-        return new ResponseEntity<Response200>(HttpStatus.OK);
+        return new ResponseEntity<ResultMsg>(HttpStatus.OK);
     }
 
     public ResponseEntity<Void> deleteTopic(@ApiParam(value = "Topic id to delete",required=true ) @PathVariable("topicId") Long topicId) {
@@ -68,23 +68,23 @@ public class TopicApiController implements TopicApi {
         return new ResponseEntity<List<Topic>>(HttpStatus.OK);
     }
 
-    public ResponseEntity<Response200> sendTopicToUser(@ApiParam(value = "ID of topic to send.",required=true ) @PathVariable("topicId") Long topicId,
+    public ResponseEntity<ResultMsg> sendTopicToUser(@ApiParam(value = "ID of topic to send.",required=true ) @PathVariable("topicId") Long topicId,
         @ApiParam(value = "person who receive the topic.", required=true ) @RequestPart(value="receiver", required=true)  String receiver,
         @ApiParam(value = "The way of sending.", required=true , allowableValues="INNER, MESSAGE, WEIXIN, QQ") @RequestPart(value="pattern", required=true)  String pattern) {
         // do some magic!
-        return new ResponseEntity<Response200>(HttpStatus.OK);
+        return new ResponseEntity<ResultMsg>(HttpStatus.OK);
     }
 
-    public ResponseEntity<Response200> updateTopic(@ApiParam(value = "Topic object that needs to be added to the store" ,required=true ) @RequestBody Topic topic) {
+    public ResponseEntity<ResultMsg> updateTopic(@ApiParam(value = "Topic object that needs to be added to the store" ,required=true ) @RequestBody Topic topic) {
         // do some magic!
-        return new ResponseEntity<Response200>(HttpStatus.OK);
+        return new ResponseEntity<ResultMsg>(HttpStatus.OK);
     }
 
-    public ResponseEntity<Response200> uploadFile(@ApiParam(value = "ID of topic to update",required=true ) @PathVariable("topicId") Long topicId,
+    public ResponseEntity<ResultMsg> uploadFile(@ApiParam(value = "ID of topic to update",required=true ) @PathVariable("topicId") Long topicId,
         @ApiParam(value = "file detail") @RequestPart("file") MultipartFile img,
         @ApiParam(value = "file detail") @RequestPart("file") MultipartFile file) {
         // do some magic!
-        return new ResponseEntity<Response200>(HttpStatus.OK);
+        return new ResponseEntity<ResultMsg>(HttpStatus.OK);
     }
 
 }

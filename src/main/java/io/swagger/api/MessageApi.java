@@ -1,6 +1,6 @@
 package io.swagger.api;
 
-import io.swagger.model.Response200;
+import io.swagger.model.ResultMsg;
 import io.swagger.model.TopicMessage;
 
 import io.swagger.annotations.*;
@@ -30,18 +30,18 @@ public interface MessageApi {
     ResponseEntity<List<TopicMessage>> getMessagesOfTopic(@ApiParam(value = "ID of topic to return",required=true ) @PathVariable("topicId") Long topicId);
 
 
-    @ApiOperation(value = "send an message to other users in a topic", notes = "", response = Response200.class, tags={ "message", })
+    @ApiOperation(value = "send an message to other users in a topic", notes = "", response = ResultMsg.class, tags={ "message", })
     @ApiResponses(value = { 
-        @ApiResponse(code = 200, message = "successful operation", response = Response200.class),
-        @ApiResponse(code = 400, message = "Invalid ID supplied", response = Response200.class),
-        @ApiResponse(code = 401, message = "Invalid user authority", response = Response200.class),
-        @ApiResponse(code = 404, message = "Topic not found", response = Response200.class),
-        @ApiResponse(code = 405, message = "Validation exception", response = Response200.class) })
+        @ApiResponse(code = 200, message = "successful operation", response = ResultMsg.class),
+        @ApiResponse(code = 400, message = "Invalid ID supplied", response = ResultMsg.class),
+        @ApiResponse(code = 401, message = "Invalid user authority", response = ResultMsg.class),
+        @ApiResponse(code = 404, message = "Topic not found", response = ResultMsg.class),
+        @ApiResponse(code = 405, message = "Validation exception", response = ResultMsg.class) })
     @RequestMapping(value = "/message/{topicId}/send",
         produces = { "application/json" }, 
         consumes = { "application/json" },
         method = RequestMethod.POST)
-    ResponseEntity<Response200> sendMessageOfTopic(@ApiParam(value = "ID of topic to return",required=true ) @PathVariable("topicId") Long topicId,
+    ResponseEntity<ResultMsg> sendMessageOfTopic(@ApiParam(value = "ID of topic to return",required=true ) @PathVariable("topicId") Long topicId,
         @ApiParam(value = "content placed for sending message." ,required=true ) @RequestBody TopicMessage message);
 
 }
