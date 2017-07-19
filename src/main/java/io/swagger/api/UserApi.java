@@ -28,7 +28,7 @@ public interface UserApi {
     @ApiResponses(value = { 
         @ApiResponse(code = 200, message = "successful operation", response = ResultMsg.class),
         @ApiResponse(code = 405, message = "invalid exception", response = ResultMsg.class) })
-    @RequestMapping(value = "/user",
+    @RequestMapping(value = "/user/create",
         produces = { "application/json" }, 
         consumes = { "application/json" },
         method = RequestMethod.POST)
@@ -75,9 +75,11 @@ public interface UserApi {
         @ApiResponse(code = 405, message = "invalid exception", response = ResultMsg.class) })
     @RequestMapping(value = "/user/login",
         produces = { "application/json" }, 
-        method = RequestMethod.GET)
-    ResponseEntity<ResultMsg> loginUser( @NotNull @ApiParam(value = "The user name for login", required = true) @RequestParam(value = "username", required = true) String username,
-         @NotNull @ApiParam(value = "The password for login in clear text", required = true) @RequestParam(value = "password", required = true) String password);
+        method = RequestMethod.POST)
+    ResponseEntity<ResultMsg> loginUser( @NotNull @ApiParam(value = "The user name for login", required = true) @RequestParam(value = "userid", required = true) String userid,
+         @NotNull @ApiParam(value = "The password for login in clear text", required = true) @RequestParam(value = "password", required = true) String password,
+         @NotNull @ApiParam(value = "The indentify code to verify a person but not a machine", required = true) @RequestParam(value = "identifyCode", required = true) String identifyCode,
+         HttpServletRequest req);
 
 
     @ApiOperation(value = "Logs out current logged in user session", notes = "", response = Void.class, tags={ "user", })

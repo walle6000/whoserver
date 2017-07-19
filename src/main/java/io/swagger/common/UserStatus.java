@@ -4,6 +4,7 @@ public enum UserStatus {
      OK,
 	 userIdEmpty,
      userIdExist,
+     userIdNotExist,
      passwordEmpty,
      passwordWrong,
      identityEmpty,

@@ -42,7 +42,7 @@ public class Swagger2SpringBoot implements CommandLineRunner {
 
 	}
 	
-	@Bean  
+	/*@Bean  
     public FilterRegistrationBean jwtFilterRegistrationBean(){  
         FilterRegistrationBean registrationBean = new FilterRegistrationBean();  
         HTTPBearerAuthorizeFilter httpBearerFilter = new HTTPBearerAuthorizeFilter();  
@@ -51,5 +51,5 @@ public class Swagger2SpringBoot implements CommandLineRunner {
         urlPatterns.add("/user/*");  
         registrationBean.setUrlPatterns(urlPatterns);  
         return registrationBean;  
-    }  
+    }  */
 }

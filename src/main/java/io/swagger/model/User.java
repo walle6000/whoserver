@@ -56,6 +56,19 @@ public class User implements Serializable  {
   @JsonProperty("role")
   @Column(name="role")
   private String role = "endUser";
+  
+  
+
+  public User() {
+	super();
+  }
+
+  public User(String userid, String password, String identifyCode) {
+	super();
+	this.userid = userid;
+	this.password = password;
+	this.identifyCode = identifyCode;
+  }
 
   public User id(Long id) {
     this.id = id;

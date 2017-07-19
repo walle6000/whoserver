@@ -78,6 +78,15 @@ public class RedisService {
     	 return set(key,value);
     }
     
+    public <T> boolean setObjct(String key, T object,long expire){
+    	String value = JSONUtil.toJson(object);
+    	boolean result = set(key,value);
+    	if(result){
+    		this.expire(key, expire);
+    	}
+    	 return result;
+    }
+    
     public <T> T getObject(String key, Class<T> clz){
     	String json = get(key);
     	if(json!=null){

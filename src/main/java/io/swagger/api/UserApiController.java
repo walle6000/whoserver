@@ -46,42 +46,42 @@ public class UserApiController implements UserApi {
     	logger.info("UserApiController - createUser: User is\n" + user);
     	HttpSession session = req.getSession(true); 
         String sessionId = session.getId();
-        UserStatus us = userService.checkUser(user, sessionId);
+        UserStatus us = userService.checkSaveUser(user, sessionId);
         ResultMsg response = null;
         switch(us){
         case OK:
-        	   logger.info("UserApiController - User checking is successful.");
-        	   userService.saveUser(user);
-               logger.info("UserApiController - createUser is successful.");
-               logger.info("UserApiController - createUser new id is:"+user.getId());
-               logger.info("UserApiController - createUser new userid is:"+user.getUserid());
-               logger.info("UserApiController - createUser new user role is:"+user.getRole());
-               logger.info("UserApiController - createUser get access token.");
+        	   logger.info("UserApiController - createUser:User checking is successful.");
+        	   userService.saveUser(user,true);
+               logger.info("UserApiController - createUser:createUser is successful.");
+               logger.info("UserApiController - createUser:createUser new id is:"+user.getId());
+               logger.info("UserApiController - createUser:createUser new userid is:"+user.getUserid());
+               logger.info("UserApiController - createUser:createUser new user role is:"+user.getRole());
+               logger.info("UserApiController - createUser:createUser get access token.");
                AccessToken accessToken = webTokenService.getAccessToken(user);
                response = new ResultMsg(1,"create user successfully",accessToken);
                break;
         case userIdEmpty:
-        	   logger.info("UserApiController - User checking is fail<userid is empty>.");
+        	   logger.info("UserApiController - createUser:User checking is fail<userid is empty>.");
                response = new ResultMsg(2,"userid is empty");
                break;
         case userIdExist:
-        	   logger.info("UserApiController - User checking is fail<userid existed>.");
+        	   logger.info("UserApiController - createUser:User checking is fail<userid existed>.");
         	   response = new ResultMsg(2,"userid existed");
                break;
         case passwordEmpty:
-        	   logger.info("UserApiController - User checking is fail<password is empty>.");
+        	   logger.info("UserApiController - createUser:User checking is fail<password is empty>.");
      	       response = new ResultMsg(2,"password is empty");
                break;
         case identityEmpty:
-        	   logger.info("UserApiController - User checking is fail<verify code is empty>.");
+        	   logger.info("UserApiController - createUser:User checking is fail<verify code is empty>.");
   	           response = new ResultMsg(2,"verify code is empty");
                break;
         case identityExpired:
-        	   logger.info("UserApiController - User checking is fail<verify code Expired>.");
+        	   logger.info("UserApiController - createUser:User checking is fail<verify code Expired>.");
 	           response = new ResultMsg(2,"verify code Expired");
                break;
         case identityWrong:
-        	   logger.info("UserApiController - User checking is fail<verify code is wrong>.");
+        	   logger.info("UserApiController - createUser:User checking is fail<verify code is wrong>.");
 	           response = new ResultMsg(2,"verify code is wrong");
                break;
         default:break;
@@ -107,10 +107,55 @@ public class UserApiController implements UserApi {
         return new ResponseEntity<User>(user,HttpStatus.OK);
     }
 
-    public ResponseEntity<ResultMsg> loginUser( @NotNull @ApiParam(value = "The user name for login", required = true) @RequestParam(value = "username", required = true) String username,
-         @NotNull @ApiParam(value = "The password for login in clear text", required = true) @RequestParam(value = "password", required = true) String password) {
+    public ResponseEntity<ResultMsg> loginUser( @NotNull @ApiParam(value = "The user id for login", required = true) @RequestParam(value = "userid", required = true) String userid,
+         @NotNull @ApiParam(value = "The password for login in clear text", required = true) @RequestParam(value = "password", required = true) String password,
+         @NotNull @ApiParam(value = "The indentify code to verify a person but not a machine", required = true) @RequestParam(value = "identifyCode", required = true) String identifyCode,
+         HttpServletRequest req) {
         // do some magic!
-        return new ResponseEntity<ResultMsg>(HttpStatus.OK);
+    	HttpSession session = req.getSession(true); 
+        String sessionId = session.getId();
+    	logger.info("UserApiController - loginUser:user start to login。");
+    	User user = new User(userid,password,identifyCode);
+    	UserStatus us = userService.checkLoginUser(user, sessionId);
+    	ResultMsg response = null;
+    	switch(us){
+        case OK:
+        	   logger.info("UserApiController - loginUser:User login is successful.");
+               logger.info("UserApiController - loginUser:login User get access token.");
+               AccessToken accessToken = webTokenService.getAccessToken(userService.getUserByUserid(user.getUserid()));
+               response = new ResultMsg(1,"login user successfully",accessToken);
+               break;
+        case userIdEmpty:
+        	   logger.info("UserApiController - loginUser:User checking is fail<userid is empty>.");
+               response = new ResultMsg(2,"userid is empty");
+               break;
+        case userIdNotExist:
+        	   logger.info("UserApiController - loginUser:User checking is fail<userid not existed>.");
+        	   response = new ResultMsg(2,"userid is not existed");
+               break;
+        case passwordEmpty:
+        	   logger.info("UserApiController - loginUser:User checking is fail<password is empty>.");
+     	       response = new ResultMsg(2,"password is empty");
+               break;
+        case passwordWrong:
+        	   logger.info("UserApiController - loginUser:User checking is fail<password is wrong>.");
+  	           response = new ResultMsg(2,"password is wrong");
+               break;
+        case identityEmpty:
+        	   logger.info("UserApiController - loginUser:User checking is fail<verify code is empty>.");
+  	           response = new ResultMsg(2,"verify code is empty");
+               break;
+        case identityExpired:
+        	   logger.info("UserApiController - loginUser:User checking is fail<verify code Expired>.");
+	           response = new ResultMsg(2,"verify code Expired");
+               break;
+        case identityWrong:
+        	   logger.info("UserApiController - loginUser:User checking is fail<verify code is wrong>.");
+	           response = new ResultMsg(2,"verify code is wrong");
+               break;
+        default:break;
+        }
+        return new ResponseEntity<ResultMsg>(response,HttpStatus.OK);
     }
 
     public ResponseEntity<Void> logoutUser() {
