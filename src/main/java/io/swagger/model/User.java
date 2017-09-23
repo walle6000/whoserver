@@ -33,11 +33,11 @@ public class User implements Serializable  {
   private Long id = null;
 
   @JsonProperty("userid")
-  @Column(name="userid")
+  @Column(name="userid",nullable=false,unique=true)
   private String userid = null;
 
   @JsonProperty("password")
-  @Column(name="password")
+  @Column(name="password",nullable=false)
   private String password = null;
 
   @JsonProperty("identifyCode")
@@ -55,13 +55,19 @@ public class User implements Serializable  {
   
   @JsonProperty("role")
   @Column(name="role")
-  private String role = "endUser";
+  private String role = "0";
   
   
 
   public User() {
 	super();
   }
+  
+  public User(String userid, String password) {
+		super();
+		this.userid = userid;
+		this.password = password;
+	  }
 
   public User(String userid, String password, String identifyCode) {
 	super();

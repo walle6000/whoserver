@@ -15,9 +15,9 @@ import io.swagger.dao.UserDao;
 import io.swagger.model.AccessToken;
 import io.swagger.model.User;
 import io.swagger.model.UserProfile;
-import io.swagger.service.AudienceService;
-import io.swagger.service.RedisService;
-import io.swagger.service.WebTokenService;
+import io.swagger.service.common.AudienceService;
+import io.swagger.service.common.RedisService;
+import io.swagger.service.common.WebTokenService;
 import io.swagger.utils.JWTUtil;
 
 @RunWith(SpringJUnit4ClassRunner.class)

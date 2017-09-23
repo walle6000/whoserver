@@ -1,11 +1,16 @@
 package io.swagger.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class FileUpload {
 
+	@JsonProperty("fileName")
 	private String fileName;
 	
+	@JsonProperty("fileUrl")
 	private String fileUrl;
 	
+	@JsonProperty("thumbnailUrl")
 	private String thumbnailUrl;
 
 	public String getFileName() {

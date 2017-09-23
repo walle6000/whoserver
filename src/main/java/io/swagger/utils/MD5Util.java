@@ -2,7 +2,9 @@ package io.swagger.utils;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
+import java.util.Base64;
 
 public class MD5Util {
 	private static char hexdigits[] = { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e','f' };  
@@ -77,4 +79,30 @@ public class MD5Util {
         s = new String(str); // 换后的结果转换为字符串  
         return s;  
     }  
+    
+    
+    /** 
+     * BASE64解密 
+     *  
+     * @param key 
+     * @return 
+     * @throws Exception 
+     */  
+    public static String decryptBASE64(String key) {  
+    	String unDecodeStr=new String(Base64.getDecoder().decode(key),StandardCharsets.UTF_8); 
+        return unDecodeStr;
+    }  
+  
+    /** 
+     * BASE64加密 
+     *  
+     * @param key 
+     * @return 
+     * @throws Exception 
+     */  
+    public static String encryptBASE64(String key) {  
+    	String desc = Base64.getEncoder().encodeToString(key.getBytes(StandardCharsets.UTF_8));  
+        return desc;  
+    }  
+    
 }

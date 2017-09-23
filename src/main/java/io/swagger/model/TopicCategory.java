@@ -1,22 +1,76 @@
 package io.swagger.model;
 
+import java.io.Serializable;
 import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import javax.validation.constraints.*;
 /**
  * TopicCategory1
  */
+@SuppressWarnings("serial")
 @javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2017-07-05T03:12:51.178Z")
-
-public class TopicCategory   {
+@Entity
+@Table(name="topiccategory")
+public class TopicCategory implements Serializable  {
   @JsonProperty("id")
+  @Id
+  @GeneratedValue(strategy=GenerationType.AUTO)
   private Long id = null;
 
   @JsonProperty("name")
+  @Column(name="name",nullable=false)
   private String name = null;
+  
+  @JsonProperty("userId")
+  @Column(name="userid",nullable=false)
+  private String userId = null;
+  
+  @JsonProperty("categoryType")
+  @Column(name="categorytype",nullable=false)
+  private Integer categoryType = null;
+  
+  @JsonProperty("ratio")
+  @Column(name="ratio",nullable=false)
+  private Integer ratio;
+  
+  @JsonProperty("period")
+  @Column(name="period",nullable=false)
+  private Integer period;
+  
+  @JsonProperty("rightNum")
+  @Column(name="rightnum",nullable=false)
+  private Integer rightNum;
+  
+  @JsonProperty("tierNum")
+  @Column(name="tiernum",nullable=true)
+  private Integer tierNum;
+  
+  @JsonProperty("totalNum")
+  @Column(name="totalnum",nullable=true)
+  private Integer totalNum;
+  
+  @JsonProperty("totalRewardNum")
+  @Column(name="totalrewardnum",nullable=false)
+  private Integer totalRewardNum;
+  
+  @JsonProperty("discussType")
+  @Column(name="discusstype",nullable=false)
+  private Integer discussType;
+  
+  @JsonProperty("status")
+  @Column(name="status",nullable=false)
+  private Integer status = 0;
+  
 
   public TopicCategory id(Long id) {
     this.id = id;
@@ -54,8 +108,99 @@ public class TopicCategory   {
     this.name = name;
   }
 
+  
+  @ApiModelProperty(value = "")
+  public String getUserId() {
+	return userId;
+  }
 
-  @Override
+  public void setUserId(String userId) {
+	this.userId = userId;
+  }
+
+  @ApiModelProperty(value = "")
+  public Integer getCategoryType() {
+	return categoryType;
+  }
+
+  public void setCategoryType(Integer categoryType) {
+	this.categoryType = categoryType;
+  }
+
+  @ApiModelProperty(value = "")
+  public Integer getRatio() {
+	return ratio;
+  }
+
+  public void setRatio(Integer ratio) {
+	this.ratio = ratio;
+  }
+
+  @ApiModelProperty(value = "")
+  public Integer getPeriod() {
+	return period;
+  }
+
+  public void setPeriod(Integer period) {
+	this.period = period;
+  }
+
+  @ApiModelProperty(value = "")
+  public Integer getRightNum() {
+	return rightNum;
+  }
+
+  public void setRightNum(Integer rightNum) {
+	this.rightNum = rightNum;
+  }
+
+  @ApiModelProperty(value = "")
+  public Integer getTierNum() {
+	return tierNum;
+  }
+
+  public void setTierNum(Integer tierNum) {
+	this.tierNum = tierNum;
+  }
+
+  @ApiModelProperty(value = "")
+  public Integer getTotalNum() {
+	return totalNum;
+  }
+
+  public void setTotalNum(Integer totalNum) {
+	this.totalNum = totalNum;
+  }
+
+  @ApiModelProperty(value = "")
+  public Integer getTotalRewardNum() {
+	return totalRewardNum;
+  }
+
+  public void setTotalRewardNum(Integer totalRewardNum) {
+	this.totalRewardNum = totalRewardNum;
+  }
+
+  @ApiModelProperty(value = "")
+  public Integer getDiscussType() {
+	return discussType;
+  }
+
+  public void setDiscussType(Integer discussType) {
+	this.discussType = discussType;
+  }
+  
+  
+  @ApiModelProperty(value = "")
+  public Integer getStatus() {
+	return status;
+  }
+
+  public void setStatus(Integer status) {
+	this.status = status;
+  }
+
+@Override
   public boolean equals(java.lang.Object o) {
     if (this == o) {
       return true;

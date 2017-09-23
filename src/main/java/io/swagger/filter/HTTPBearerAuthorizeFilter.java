@@ -18,15 +18,19 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.annotation.Order;
 import org.springframework.util.StringUtils;
 import org.springframework.web.context.support.SpringBeanAutowiringSupport;
 
 import io.swagger.common.CacheType;
 import io.swagger.model.User;
-import io.swagger.service.RedisService;
-import io.swagger.service.WebTokenService;
+import io.swagger.service.UserService;
+import io.swagger.service.common.RedisService;
+import io.swagger.service.common.WebTokenService;
 
-@WebFilter(urlPatterns = "/*", filterName = "HTTPBearerAuthorizeFilter",initParams={@WebInitParam(name="exceptionConfiguration",value="user/create,user/login")})
+@WebFilter(urlPatterns = "/*", filterName = "HTTPBearerAuthorizeFilter",
+initParams={@WebInitParam(name="exceptionConfiguration",value="user/create|user/login|verifyCode/get|api-docs|user/getIdentifyCode/\\d+|user/\\d+/reset|topic/invite/accept")})
+@Order(Integer.MAX_VALUE)
 public class HTTPBearerAuthorizeFilter implements Filter {
 	
 	protected List<Pattern> patterns = new ArrayList<Pattern>();
@@ -36,6 +40,9 @@ public class HTTPBearerAuthorizeFilter implements Filter {
 	
 	@Autowired
 	private RedisService redisService;
+	
+	@Autowired
+	private UserService userService;
 
 	@Override
 	public void destroy() {
@@ -59,7 +66,10 @@ public class HTTPBearerAuthorizeFilter implements Filter {
 	      return;
 	    } 
 		
-        String auth = httpRequest.getHeader("Authorization");  
+        String auth = httpRequest.getHeader("Authorization");
+        if(auth==null){
+        	auth = httpRequest.getParameter("Authorization");
+        }
         if ((auth != null) && (auth.length() > 7))  
         {  
             String HeadStr = auth.substring(0, 6).toLowerCase();  
@@ -67,7 +77,18 @@ public class HTTPBearerAuthorizeFilter implements Filter {
             {  
                 auth = auth.substring(7, auth.length());
                 String md5key = redisService.getMD5CacheKey(CacheType.tokenKey, auth);
-                User currentUser = redisService.getObject(md5key, User.class);
+               
+                String currentUserId = redisService.get(md5key);
+                if(currentUserId == null){
+                	currentUserId = webTokenService.parseAccessTokenToUserId(auth);
+                }
+                if (currentUserId != null && userService.getUserByUserid(currentUserId)!=null)  
+                {  
+                	redisService.set(md5key, currentUserId,860000);
+                    chain.doFilter(request, response);  
+                    return;  
+                }  
+                /*User currentUser = redisService.get(md5key);
                 if(currentUser == null){
                 	currentUser = webTokenService.parseAccessToken(auth);
                 }
@@ -76,7 +97,7 @@ public class HTTPBearerAuthorizeFilter implements Filter {
                 	redisService.setObjct(md5key, currentUser,860000);
                     chain.doFilter(request, response);  
                     return;  
-                }  
+                }  */
             }  
         }  
         
@@ -94,7 +115,7 @@ public class HTTPBearerAuthorizeFilter implements Filter {
 		SpringBeanAutowiringSupport.processInjectionBasedOnServletContext(this,  
                 filterConfig.getServletContext()); 
 		String exceptionConfiguration = filterConfig.getInitParameter("exceptionConfiguration");
-		String[] exceptionArray = StringUtils.split(exceptionConfiguration, ",");
+		String[] exceptionArray = StringUtils.tokenizeToStringArray(exceptionConfiguration, "|");
 		for(String exception : exceptionArray){
 			patterns.add(Pattern.compile(exception));
 		}

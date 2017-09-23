@@ -8,4 +8,12 @@ public class NotFoundException extends ApiException {
 		super(code, msg);
 		this.code = code;
 	}
+	public int getCode() {
+		return code;
+	}
+	public void setCode(int code) {
+		this.code = code;
+	}
+	
+	
 }

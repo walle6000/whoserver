@@ -92,10 +92,20 @@ public class DateUtil {
 	}
 	
 	public static String toStrYMD(Object o) {
+		if(o==null){
+			return "";
+		}
 		if ((o instanceof Date)) {
 			SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
 			try {
 				return format.format((Date) o);
+			} catch (RuntimeException e) {
+				return "";
+			}
+		}else if((o instanceof Long)){
+			SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+			try {
+				return format.format(new Date((Long)o));
 			} catch (RuntimeException e) {
 				return "";
 			}
@@ -113,5 +123,20 @@ public class DateUtil {
 			}
 		}
 		return "";
+	}
+	
+	
+	
+	public static Long getSpanDays(Date d1,Date d2) {
+		long diffDays = (d1.getTime() - d1.getTime()) / (1000 * 60 * 60 * 24);
+		return diffDays;
+	}
+	
+	public static Long getSpanDays(Long d1,Long d2) {
+		if(d1 == null || d2 == null){
+			return 0l;
+		}
+		long diffDays = (d1 - d1) / (1000 * 60 * 60 * 24);
+		return diffDays;
 	}
 }

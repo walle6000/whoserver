@@ -14,7 +14,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import io.swagger.common.CacheType;
-import io.swagger.service.RedisService;
+import io.swagger.service.common.RedisService;
 import io.swagger.utils.VerifyCodeUtils;
 
 @SuppressWarnings("serial")

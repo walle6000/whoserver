@@ -30,6 +30,9 @@ public class ResultMsg   {
   
   @JsonProperty("accessToken")
   private AccessToken accessToken;
+  
+  @JsonProperty("attached")
+  private Object attached;
 
   public ResultMsg(int code){
 		this.code = code;
@@ -107,6 +110,32 @@ public class ResultMsg   {
 		this.accessToken = accessToken;
 	}
   
+  public ResultMsg(int code, String message,Object attached){
+		this.code = code;
+		switch(code){
+		case ERROR:
+			setType("error");
+			break;
+		case WARNING:
+			setType("warning");
+			break;
+		case INFO:
+			setType("info");
+			break;
+		case OK:
+			setType("ok");
+			break;
+		case TOO_BUSY:
+			setType("too busy");
+			break;
+		default:
+			setType("unknown");
+			break;
+		}
+		this.message = message;
+		this.attached = attached;
+	}
+  
   public ResultMsg code(Integer code) {
 	    this.code = code;
 	    return this;
@@ -160,13 +189,23 @@ public class ResultMsg   {
     this.message = message;
   }
   
-
+  @ApiModelProperty(value = "")
   public AccessToken getAccessToken() {
 	return accessToken;
 }
 
 public void setAccessToken(AccessToken accessToken) {
 	this.accessToken = accessToken;
+}
+
+
+@ApiModelProperty(value = "")
+public Object getAttached() {
+	return attached;
+}
+
+public void setAttached(Object attached) {
+	this.attached = attached;
 }
 
 @Override

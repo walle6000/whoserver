@@ -19,6 +19,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @EnableSwagger2
 @ComponentScan(basePackages = "io.swagger")
 @ServletComponentScan
+//@EnableTransactionManagement // 启注解事务管理
 public class Swagger2SpringBoot implements CommandLineRunner {
 
 	@Override

@@ -1,4 +1,4 @@
-package io.swagger.service;
+package io.swagger.service.common;
 
 import java.awt.Image;
 import java.awt.image.BufferedImage;
@@ -128,10 +128,51 @@ public List<FileUpload> uploadImgFile(FileType fileType,MultipartFile... multipa
     	return fileUploadEntities;
     }
     
-    private String uploadFile(String uploadPath,String uploadFileName,MultipartFile uploadFile){
+public List<FileUpload> uploadImgFile(String userId, FileType fileType,MultipartFile... multipartFile) throws IOException{
+	
+	List<FileUpload> fileUploadEntities = new ArrayList<FileUpload>();
+	
+	if(multipartFile!=null){
+		for(MultipartFile tempFile : multipartFile){
+			if(!tempFile.isEmpty()){
+				String checkSum = MD5Util.getMD5(tempFile.getInputStream());  
+				String fileExtension = getFileExtension(tempFile.getOriginalFilename()).toLowerCase();  
+                String preName = getPreName(userId,fileType,false).toLowerCase();  
+                String blobName = checkSum + fileExtension; 
+                logger.info("FileUploadService - uploadImgFile blobName:" + preName+blobName);
+                String visitUrl = uploadFile(preName,blobName,tempFile);
+                
+                //生成缩略图
+                BufferedImage img = new BufferedImage(thumbnailWidth, thumbnailHeight, BufferedImage.TYPE_INT_RGB);  
+                img.createGraphics().drawImage(ImageIO.read(tempFile.getInputStream()).getScaledInstance(thumbnailWidth, thumbnailHeight, Image.SCALE_SMOOTH),0,0,null);  
+                ByteArrayOutputStream thumbnailStream = new ByteArrayOutputStream();  
+                ImageIO.write(img, "jpg", thumbnailStream);  
+                InputStream inputStream = new ByteArrayInputStream(thumbnailStream.toByteArray());  
+                String thumbnailPreName = getPreName(userId,fileType,true).toLowerCase();  
+                String thumbnailCheckSum = MD5Util.getMD5(new ByteArrayInputStream(thumbnailStream.toByteArray()));  
+                String blobThumbnail = thumbnailCheckSum + ".jpg";  
+                logger.info("FileUploadService - uploadImgFile blobThumbnail:" + thumbnailPreName+thumbnailCheckSum+".jpg");
+                String visitThumbUrl = uploadFile(thumbnailPreName,blobThumbnail,inputStream);
+                
+                //将上传后的图片URL返回  
+                FileUpload blobUploadEntity = new FileUpload();  
+                blobUploadEntity.setFileName(tempFile.getOriginalFilename());  
+                blobUploadEntity.setFileUrl(visitUrl);  
+                blobUploadEntity.setThumbnailUrl(visitThumbUrl);  
+                  
+                fileUploadEntities.add(blobUploadEntity);  
+			}
+		}
+	}
+	
+	return fileUploadEntities;
+}  
+
+
+  private String uploadFile(String uploadPath,String uploadFileName,MultipartFile uploadFile){
     	File file = new File(new File(uploadPath), uploadFileName);  
         if (file.exists()) {  
-        	return visitContextUrl+uploadFileName;
+        	return (uploadPath+uploadFileName).replace(uploadRootPath, visitContextUrl);
         }else {  
             File dir = new File(uploadPath);  
             if (!(dir.exists()))  
@@ -139,7 +180,7 @@ public List<FileUpload> uploadImgFile(FileType fileType,MultipartFile... multipa
             //上传文件  
             try {  
                 FileUtils.copyInputStreamToFile(uploadFile.getInputStream(), file);  
-                return visitContextUrl+uploadFileName;
+                return (uploadPath+uploadFileName).replace(uploadRootPath, visitContextUrl);
             } catch (IOException e) {  
                 e.printStackTrace();  
             }  
@@ -150,7 +191,7 @@ public List<FileUpload> uploadImgFile(FileType fileType,MultipartFile... multipa
     private String uploadFile(String uploadPath,String uploadFileName,InputStream uploadInputStream){
     	File file = new File(new File(uploadPath), uploadFileName);  
         if (file.exists()) {  
-        	return visitContextUrl+uploadFileName;
+        	return (uploadPath+uploadFileName).replace(uploadRootPath, visitContextUrl);
         }else {  
             File dir = new File(uploadPath);  
             if (!(dir.exists()))  
@@ -158,7 +199,7 @@ public List<FileUpload> uploadImgFile(FileType fileType,MultipartFile... multipa
             //上传文件  
             try {  
                 FileUtils.copyInputStreamToFile(uploadInputStream, file);  
-                return visitContextUrl+uploadFileName;
+                return (uploadPath+uploadFileName).replace(uploadRootPath, visitContextUrl);
             } catch (IOException e) {  
                 e.printStackTrace();  
             }  
@@ -191,6 +232,18 @@ public List<FileUpload> uploadImgFile(FileType fileType,MultipartFile... multipa
     
     private String getPreName(FileType fileType,Boolean thumbnail){  
     	String uploadPath = uploadRootPath + File.separator + fileType.name().toLowerCase() + File.separator;
+    	
+        String afterName = "";
+        if (thumbnail){
+            afterName = "thumbnail" + File.separator;  
+        }
+        
+        return uploadPath + afterName;
+        
+    } 
+    
+    private String getPreName(String userId, FileType fileType,Boolean thumbnail){  
+    	String uploadPath = uploadRootPath + File.separator + userId + File.separator + fileType.name().toLowerCase() + File.separator;
     	
         String afterName = "";
         if (thumbnail){

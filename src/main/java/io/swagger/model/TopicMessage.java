@@ -5,6 +5,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import org.joda.time.DateTime;
@@ -12,9 +14,10 @@ import javax.validation.constraints.*;
 /**
  * TopicMessage
  */
+@SuppressWarnings("serial")
 @javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2017-07-05T03:12:51.178Z")
 
-public class TopicMessage   {
+public class TopicMessage implements Serializable {
   @JsonProperty("id")
   private Long id = null;
 

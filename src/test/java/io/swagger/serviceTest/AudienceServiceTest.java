@@ -13,8 +13,8 @@ import io.swagger.Swagger2SpringBoot;
 import io.swagger.dao.UserDao;
 import io.swagger.model.User;
 import io.swagger.model.UserProfile;
-import io.swagger.service.AudienceService;
-import io.swagger.service.RedisService;
+import io.swagger.service.common.AudienceService;
+import io.swagger.service.common.RedisService;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest(classes=Swagger2SpringBoot.class)

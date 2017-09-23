@@ -1,6 +1,7 @@
 package io.swagger.model;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
@@ -12,7 +13,10 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Lob;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.validation.constraints.*;
 /**
  * UserUserProfile
@@ -31,6 +35,14 @@ public class UserProfile implements Serializable  {
   @JsonProperty("userName")
   @Column(name="username")
   private String userName = null;
+  
+  @JsonProperty("userPinYin")
+  @Column(name="userpinyin")
+  private String userPinYin = null;
+  
+  @JsonProperty("gender")
+  @Column(name="gender")
+  private String gender = null;
 
   @JsonProperty("email")
   @Column(name="email")
@@ -49,12 +61,42 @@ public class UserProfile implements Serializable  {
   private String qq = null;
 
   @JsonProperty("headIcon")
-  @Column(name="headicon")
+  @Column(name="headIcon")
   private String headIcon = null;
+  
+  @JsonProperty("thumbnailheadIcon")
+  @Column(name="thumbnailheadIcon")
+  private String thumbnailheadIcon = null;
+  
+  @JsonProperty("birthDay")
+  //@Temporal(TemporalType.TIMESTAMP)
+  @Column(name = "birthday")
+  private String birthDay = null;
+  
+  @JsonProperty("homeTown")
+  @Column(name = "hometown")
+  private String homeTown = null;
 
   @JsonProperty("summry")
   @Column(name="summry")
   private String summry = null;
+  
+  @JsonProperty("tag")
+  @Column(name="tag")
+  private String tag;
+  
+  @JsonProperty("others")
+  @Column(name="others")
+  private String others;
+  
+  @Lob
+  @Column(name=" qrCode", columnDefinition="BLOB", nullable=true) 
+  private byte[] qrCode = null;
+  
+  @JsonProperty("lastLogin")
+  //@Temporal(TemporalType.TIMESTAMP)
+  @Column(name = "lastLogin")
+  private Long lastLogin = null;
 
   public UserProfile id(Long id) {
     this.id = id;
@@ -182,11 +224,22 @@ public class UserProfile implements Serializable  {
     this.headIcon = headIcon;
   }
 
+  
+  @ApiModelProperty(value = "")
+  public String getThumbnailheadIcon() {
+	return thumbnailheadIcon;
+  }
+
+  public void setThumbnailheadIcon(String thumbnailheadIcon) {
+	this.thumbnailheadIcon = thumbnailheadIcon;
+  }
+
   public UserProfile summry(String summry) {
     this.summry = summry;
     return this;
   }
 
+  
    /**
    * Get summry
    * @return summry
@@ -199,9 +252,83 @@ public class UserProfile implements Serializable  {
   public void setSummry(String summry) {
     this.summry = summry;
   }
+  
 
+  @ApiModelProperty(value = "")
+  public byte[] getQrCode() {
+	return qrCode;
+  }
 
-  @Override
+  public void setQrCode(byte[] qrCode) {
+	this.qrCode = qrCode;
+  }
+  
+  
+  @ApiModelProperty(value = "")
+  public String getUserPinYin() {
+	return userPinYin;
+  }
+
+  public void setUserPinYin(String userPinYin) {
+	this.userPinYin = userPinYin;
+  }
+
+  @ApiModelProperty(value = "")
+  public Long getLastLogin() {
+	return lastLogin;
+  }
+
+  public void setLastLogin(Long lastLogin) {
+	this.lastLogin = lastLogin;
+  }
+  
+  @ApiModelProperty(value = "")
+  public String getGender() {
+	return gender;
+  }
+
+  public void setGender(String gender) {
+	this.gender = gender;
+  }
+
+  @ApiModelProperty(value = "")
+  public String getBirthDay() {
+	return birthDay;
+  }
+
+  public void setBirthDay(String birthDay) {
+	this.birthDay = birthDay;
+  }
+
+  @ApiModelProperty(value = "")
+  public String getHomeTown() {
+	return homeTown;
+  }
+
+  public void setHomeTown(String homeTown) {
+	this.homeTown = homeTown;
+  }
+
+  
+  @ApiModelProperty(value = "")
+	public String getTag() {
+		return tag;
+	}
+	
+	public void setTag(String tag) {
+		this.tag = tag;
+	}
+	
+	@ApiModelProperty(value = "")
+	public String getOthers() {
+		return others;
+	}
+
+public void setOthers(String others) {
+	this.others = others;
+}
+
+@Override
   public boolean equals(java.lang.Object o) {
     if (this == o) {
       return true;
@@ -237,6 +364,7 @@ public class UserProfile implements Serializable  {
     sb.append("    weixin: ").append(toIndentedString(weixin)).append("\n");
     sb.append("    qq: ").append(toIndentedString(qq)).append("\n");
     sb.append("    headIcon: ").append(toIndentedString(headIcon)).append("\n");
+    sb.append("    birthDay: ").append(toIndentedString(birthDay)).append("\n");
     sb.append("    summry: ").append(toIndentedString(summry)).append("\n");
     sb.append("}");
     return sb.toString();

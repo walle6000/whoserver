@@ -1,4 +1,4 @@
-package io.swagger.service;
+package io.swagger.service.common;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import io.jsonwebtoken.Claims;
 import io.swagger.model.AccessToken;
 import io.swagger.model.User;
+import io.swagger.service.UserService;
 import io.swagger.utils.JWTUtil;
 
 @Service
@@ -46,4 +47,14 @@ public class WebTokenService {
 		return null;
 	}
 
+	public String parseAccessTokenToUserId(String token){
+		Claims claims = JWTUtil.parseJWT(token, audienceService.getBase64Secret());
+		if(claims != null){
+			String userid = (String) claims.get("userid");
+			/*User user = userService.getUserByUserid(userid);
+			return user;*/
+			return userid;
+		}
+		return null;
+	}
 }

@@ -19,7 +19,7 @@ import org.springframework.test.context.web.WebAppConfiguration;
 import io.swagger.Swagger2SpringBoot;
 import io.swagger.common.FileType;
 import io.swagger.model.FileUpload;
-import io.swagger.service.FileUploadService;
+import io.swagger.service.common.FileUploadService;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest(classes=Swagger2SpringBoot.class)
